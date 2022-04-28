@@ -9,15 +9,14 @@ import {
   Image,
   Table,
 } from "semantic-ui-react";
-import styles from "../styles/Home.module.css";
 import pkg from "semantic-ui-react/package.json";
 import { Prisma } from "@prisma/client";
 import { fetcher } from "../utils/fetcher";
 import prisma from "../lib/prisma";
-import { useState } from "react";
+import { SetStateAction, useState } from "react";
 
 export async function getServerSideProps() {
-  const users: Prisma.UserUncheckedCreateInput[] = await prisma.user.findMany();
+  const users = await prisma.user.findMany();
   return {
     props: { initialUsers: users },
   };
@@ -29,15 +28,16 @@ const options = [
   { key: "a", text: "ADMIN", value: "ADMIN" },
 ];
 
+// @ts-ignore
 export default function Home({ initialUsers }) {
-  const [users, setUsers] =
-    useState<Prisma.UserUncheckedCreateInput[]>(initialUsers);
+  const [users, setUsers] = useState(initialUsers);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [avatar, setAvatar] = useState("");
   const [role, setRole] = useState();
 
+  // @ts-ignore
   const handleChange = (e, { value }) => setRole(value);
 
   const capitalize = (s) => {
@@ -48,19 +48,17 @@ export default function Home({ initialUsers }) {
   return (
     <>
       <Head>
-        <title>Create Next App</title>
+        <title>SWE_FORMS</title>
         <link
           rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css"
         />
       </Head>
       <Container style={{ margin: 20 }}>
-        <Header as="h3">
-          This app is powered by NextJS, Semantic UI {pkg.version}
-        </Header>
+        <Header as="h3">Home Page</Header>
         <Form
           onSubmit={async () => {
-            const body: Prisma.UserCreateInput = {
+            const body = {
               firstName,
               lastName,
               role,
@@ -73,6 +71,7 @@ export default function Home({ initialUsers }) {
             setFirstName("");
             setAvatar("");
             setLastName("");
+            // @ts-ignore
             setRole(null);
             setEmail("");
           }}
@@ -135,7 +134,7 @@ export default function Home({ initialUsers }) {
               <Table.Row key={index}>
                 <Table.Cell>
                   <Header as="h4" image>
-                    <Image src={u.avatar} rounded size="mini"></Image>
+                    <Image alt="" src={u.avatar} rounded size="mini"></Image>
                     <Header.Content>
                       {u.firstName + " " + u.lastName}
                       <Header.Subheader>{capitalize(u.role)}</Header.Subheader>

@@ -19,8 +19,12 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "pages/api/auth/[...nextauth].ts",
-    "pages/index.js"
+    "pages/api/auth/[...nextauth].tsx",
+    "pages/index.ts",
+    "stores/authContext.js",
+    "pages/index.tsx",
+    "pages/_app.tsx",
+    "pages/signin.tsx"
   ],
   "exclude": ["node_modules"]
 }

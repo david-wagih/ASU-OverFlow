@@ -4,7 +4,7 @@ import React from "react";
 import ProtectedRoute from "./ProtectedRoute";
 
 // we can add here all the wanted routes to be protected
-const authRoutes = ["/dashboard"];
+const authRoutes = ["/ProfilePage", "/QuestionsPage"];
 
 const AuthWrapper = ({ children }: { children: React.ReactNode }) => {
   const { status } = useSession();

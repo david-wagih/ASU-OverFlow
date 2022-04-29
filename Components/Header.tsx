@@ -9,7 +9,7 @@ const Header = () => {
 
   const handleSignIn = async () => {
     await signIn("github", {
-      callbackUrl: "http://localhost:3000/dashboard",
+      callbackUrl: "http://localhost:3000/ProfilePage",
     });
   };
 
@@ -20,10 +20,10 @@ const Header = () => {
   };
 
   return (
-    <Navbar bg="light">
+    <Navbar bg="dark" variant="dark">
       <Container>
         <Link href="/" passHref>
-          <Navbar.Brand>NextAuth Example</Navbar.Brand>
+          <Navbar.Brand>ASU OverFlow</Navbar.Brand>
         </Link>
         <Navbar.Collapse className="justify-content-end">
           <Nav className="ml-auto">
@@ -39,17 +39,21 @@ const Header = () => {
                   />
                 ) : null}
                 <Nav.Link as="div">
-                  <Link href="/dashboard" passHref>
-                    <Button variant="outline-primary">Dashboard</Button>
+                  <Link href="/ProfilePage" passHref>
+                    <Button variant="outline-primary">My Profile</Button>
                   </Link>
                 </Nav.Link>
                 <Nav.Link as="div">
-                  <Button onClick={handleLogout}>Logout</Button>
+                  <Button variant="outline-danger" onClick={handleLogout}>
+                    Log out
+                  </Button>
                 </Nav.Link>
               </>
             ) : (
               <Nav.Link as="div">
-                <Button onClick={handleSignIn}>SignIn</Button>
+                <Button variant="outline-primary" onClick={handleSignIn}>
+                  Sign In
+                </Button>
               </Nav.Link>
             )}
           </Nav>

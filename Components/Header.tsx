@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { signIn, useSession, signOut } from "next-auth/react";
 import Link from "next/link";
 import { Button, Container, Nav, Navbar } from "react-bootstrap";
+import { adminEmails } from "../utils/adminEmails";
 
 const Header = () => {
   const { data, status } = useSession();
@@ -38,6 +39,13 @@ const Header = () => {
                     height={50}
                     style={{ borderRadius: "50%" }}
                   />
+                ) : null}
+                {adminEmails.includes(String(data.user?.email)) ? (
+                  <Nav.Link as="div">
+                    <Link href="/adminPage" passHref>
+                      <Button variant="outline-warning">Admin Page</Button>
+                    </Link>
+                  </Nav.Link>
                 ) : null}
                 <Nav.Link as="div">
                   <Link href="/QuestionsPage" passHref>

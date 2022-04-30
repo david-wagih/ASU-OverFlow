@@ -1,16 +1,23 @@
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
+import { adminEmails } from "../utils/adminEmails";
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
-  const { status } = useSession();
+  const { data, status } = useSession();
 
+  // @ts-nocheck
   useEffect(() => {
-    if (status === "unauthenticated") {
+    if (
+      status === "unauthenticated" ||
+      // @ts-ignore
+      !adminEmails.includes(String(data.user?.email))
+    ) {
       router.push("/");
     }
-  }, [router, status]);
+    // @ts-ignore
+  }, [data.user?.email, router, status]);
 
   if (status === "unauthenticated") return null;
 

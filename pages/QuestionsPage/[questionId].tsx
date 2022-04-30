@@ -9,6 +9,7 @@ import {
 import { useRouter } from "next/router";
 import React from "react";
 import { Row } from "react-bootstrap";
+import UpVoteDownVote from "../../Components/UpVoteDownVote";
 
 // this is the question details pages
 
@@ -61,16 +62,31 @@ const Question = (props: any) => {
         {props.answerData.map((answer: any) => (
           <ListItem
             style={{
+              display: "flex",
+              justifyContent: "space-between",
               boxShadow: "0px 0px 1px #000000",
               marginTop: 20,
               backgroundColor: "#F5F5F5",
             }}
             key={answer.id}
           >
+            <ListItemAvatar>
+              <Avatar
+                style={{
+                  width: "50px",
+                  height: "50px",
+                  marginRight: "20px",
+                  marginTop: "10px",
+                }}
+                // this src should be the avatar of the user who answered the question
+                src="https://i.imgur.com/7jHX3Yb.png"
+              />
+            </ListItemAvatar>
             <ListItemText
               primary={answer.content}
               secondary={answer.createdAt}
             ></ListItemText>
+            <UpVoteDownVote />
           </ListItem>
         ))}
       </List>

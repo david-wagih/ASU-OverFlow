@@ -22,7 +22,13 @@ const Header = () => {
   };
 
   return (
-    <Navbar bg="dark" variant="dark">
+    <Navbar
+      style={{
+        boxShadow: "0px 0px 10px 0px rgba(0,0,0,0.75)",
+      }}
+      bg="light"
+      variant="light"
+    >
       <Container>
         <Link href="/" passHref>
           <Navbar.Brand>ASU-OverFlow</Navbar.Brand>

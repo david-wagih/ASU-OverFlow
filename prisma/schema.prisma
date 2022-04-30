@@ -48,8 +48,10 @@ model User {
   Question      Question[]
   Answer        Answer[]
   hasPrivilege  Boolean?
+  isRestricted  Boolean?
   Reply         Reply[]
   role          Role @default(USER)
+  request       Request?
 }
 
 enum Role {
@@ -74,7 +76,6 @@ model Question {
   updatedAt   DateTime @updatedAt
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   Answer      Answer[]
-
 }
 
 model Answer {
@@ -98,4 +99,19 @@ model Reply {
   updatedAt DateTime @updatedAt
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   Answer    Answer   @relation(fields: [id], references: [id], onDelete: Cascade)
+}
+
+model Request {
+  id        String   @id @default(cuid())
+  userId    String
+  status    Status   @default(pending)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+enum Status {
+  pending
+  accepted
+  rejected
 }

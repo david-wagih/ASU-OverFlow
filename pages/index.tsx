@@ -32,8 +32,8 @@ const Home: NextPage = () => {
         <Col className="xs={9}">
           <div style={{ justifyContent: "center" }}>
             <h1 style={{ lineHeight: "1.5" }}>
-              We Have built for you {<br />}ASU Stack Over Flow {<br />}using
-              these Technologies...
+              We Have built for you {<br />}ASU-OverFlow {<br />}using these
+              Technologies...
             </h1>
           </div>
         </Col>
@@ -54,9 +54,15 @@ const Home: NextPage = () => {
           />
           <img
             width="180"
-            height="140"
+            height="120"
             src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Node.js_logo.svg/1280px-Node.js_logo.svg.png"
             alt="Node Logo"
+          />
+          <img
+            width="180"
+            height="140"
+            src="https://static.cdnlogo.com/logos/p/25/prisma.svg"
+            alt="Prisma Logo"
           />
         </Col>
       </Row>

@@ -8,7 +8,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { id } = req.query;
   try {
     const questions = await prisma.question.findUnique({
-      where: { id: String(id) },
+      where: { id: Number(id) },
     });
     res.status(200).json(questions);
   } catch (error) {

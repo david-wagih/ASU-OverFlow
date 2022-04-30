@@ -68,7 +68,7 @@ const Question = (props: any) => {
             key={answer.id}
           >
             <ListItemText
-              primary={">>  " + answer.content}
+              primary={answer.content}
               secondary={answer.createdAt}
             ></ListItemText>
           </ListItem>

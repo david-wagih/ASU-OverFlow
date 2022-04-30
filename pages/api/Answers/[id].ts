@@ -8,7 +8,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { id } = req.query;
   try {
     const answers = await prisma.answer.findMany({
-      where: { questionId: String(id) },
+      where: { questionId: Number(id) },
     });
     res.status(200).json(answers);
   } catch (error) {

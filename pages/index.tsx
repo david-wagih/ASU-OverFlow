@@ -49,7 +49,7 @@ const Home: NextPage = () => {
             style={{ marginRight: 20 }}
             width="140"
             height="140"
-            src="http://assets.stickpng.com/images/584815fdcef1014c0b5e497a.png"
+            src="https://www.logo.wine/a/logo/PostgreSQL/PostgreSQL-Logo.wine.svg"
             alt="PostgreSQL Logo"
           />
           <img

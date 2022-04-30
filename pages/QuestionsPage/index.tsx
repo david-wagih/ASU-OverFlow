@@ -32,6 +32,11 @@ const QuestionsPage = (props: { questions: any[] }) => {
 
   const handleSearchField = (e: any) => {
     setValue(e.target.value);
+    console.log(value);
+  };
+  const handleCategoryFilter = (categoryfield: any) => {
+    setCategoryfield(categoryfield);
+    console.log(categoryfield);
   };
   return (
     <Grid>
@@ -47,10 +52,12 @@ const QuestionsPage = (props: { questions: any[] }) => {
       >
         <div style={{ width: 500 }}>
           <Select
+            onChange={handleCategoryFilter}
+            value={categoryfield}
+            // @ts-ignore
             options={CategoryOptions}
-            isMulti
             name="categories"
-            className="basic-multi-select"
+            className="basic-select"
             classNamePrefix="select"
           ></Select>
         </div>
@@ -84,12 +91,15 @@ const QuestionsPage = (props: { questions: any[] }) => {
       <List style={{ width: "100%" }}>
         {props.questions
           .filter((val) => {
-            if (value === "") {
+            if (value === "" && categoryfield === "") {
               return val;
             } else if (
-              val.content.toLowerCase().includes(value.toLowerCase())
+              val.category ===
+              // @ts-ignore
+              categoryfield.label
             ) {
-              return val;
+              if (val.content.toLowerCase().includes(value.toLowerCase()))
+                return val;
             }
           })
           .map((question: any) => (

@@ -10,7 +10,7 @@ const Header = () => {
 
   const handleSignIn = async () => {
     await signIn("github", {
-      callbackUrl: "http://localhost:3000/QuestionsPage",
+      callbackUrl: "http://localhost:3000/",
     });
   };
 

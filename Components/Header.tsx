@@ -1,15 +1,16 @@
 /* eslint-disable @next/next/no-img-element */
-import React from "react";
+import React, { useState } from "react";
 import { signIn, useSession, signOut } from "next-auth/react";
 import Link from "next/link";
 import { Button, Container, Nav, Navbar } from "react-bootstrap";
 
 const Header = () => {
   const { data, status } = useSession();
+  console.log(data, status);
 
   const handleSignIn = async () => {
     await signIn("github", {
-      callbackUrl: "http://localhost:3000/ProfilePage",
+      callbackUrl: "http://localhost:3000/QuestionsPage",
     });
   };
 
@@ -23,7 +24,7 @@ const Header = () => {
     <Navbar bg="dark" variant="dark">
       <Container>
         <Link href="/" passHref>
-          <Navbar.Brand>ASU OverFlow</Navbar.Brand>
+          <Navbar.Brand>ASU-OverFlow</Navbar.Brand>
         </Link>
         <Navbar.Collapse className="justify-content-end">
           <Nav className="ml-auto">
@@ -38,6 +39,11 @@ const Header = () => {
                     style={{ borderRadius: "50%" }}
                   />
                 ) : null}
+                <Nav.Link as="div">
+                  <Link href="/QuestionsPage" passHref>
+                    <Button variant="outline-success">Browse Questions</Button>
+                  </Link>
+                </Nav.Link>
                 <Nav.Link as="div">
                   <Link href="/ProfilePage" passHref>
                     <Button variant="outline-primary">My Profile</Button>

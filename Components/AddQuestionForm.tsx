@@ -1,13 +1,43 @@
-/* eslint-disable react/jsx-key */
-import { FormGroup, Select } from "@mui/material";
-import { getSession, useSession } from "next-auth/react";
 import React, { useState } from "react";
 import { CategoryOptions } from "../utils/categoryOptions";
 
 // todo : this method will handle the post request to add new question to the database
-const handleSubmit = () => {};
 
 const AddQuestionForm = (props: any) => {
+  const [value, setValue] = useState();
+  const [categoryfield, setCategoryfield] = useState();
+
+  const handleInputField = (e: any) => {
+    setValue(e.target.value);
+    console.log(value);
+  };
+  const handleCategoryChosing = (e: any) => {
+    setCategoryfield(e.target.value);
+    console.log(categoryfield);
+  };
+
+  const handleSubmit = async (
+    e: { preventDefault: () => void } | undefined
+  ) => {
+    // @ts-ignore
+    e.preventDefault();
+    try {
+      const newQuestion = await fetch(
+        "http://localhost:3000/api/Questions/create",
+        {
+          method: "POST",
+          body: JSON.stringify({
+            question: value,
+            category: categoryfield,
+            userId: 1,
+          }),
+        }
+      );
+      const newQuestionData = await newQuestion.json();
+      console.log(newQuestionData);
+    } catch (e) {}
+  };
+
   return (
     <form
       style={{
@@ -16,10 +46,7 @@ const AddQuestionForm = (props: any) => {
         justifyContent: "space-between",
         alignItems: "center",
       }}
-      onSubmit={(e) => {
-        e.preventDefault();
-        console.log(props.userData);
-      }}
+      onSubmit={handleSubmit}
     >
       <label
         style={{
@@ -31,6 +58,8 @@ const AddQuestionForm = (props: any) => {
         Question
       </label>
       <input
+        value={value}
+        onChange={handleInputField}
         style={{
           width: "100%",
           height: "2rem",
@@ -42,6 +71,8 @@ const AddQuestionForm = (props: any) => {
         type="text"
       />
       <select
+        value={categoryfield}
+        onChange={handleCategoryChosing}
         style={{
           width: "50%",
           borderRadius: "5px",
@@ -52,7 +83,7 @@ const AddQuestionForm = (props: any) => {
       >
         <option value="">Select Category</option>
         {CategoryOptions.map((category: any) => (
-          <option key={category.value} value={category.value}>
+          <option key={category.value} value={category.label}>
             {category.label}
           </option>
         ))}
@@ -74,22 +105,5 @@ const AddQuestionForm = (props: any) => {
     </form>
   );
 };
-
-export async function getServerSideProps(ctx: any) {
-  const session = await getSession(ctx);
-  const user = await fetch("http://localhost:3000/api/User/", {
-    body: JSON.stringify({
-      email: session?.user?.email,
-    }),
-  });
-  const userData = await user.json();
-  console.log(userData);
-
-  return {
-    props: {
-      userData,
-    },
-  };
-}
 
 export default AddQuestionForm;

@@ -2,6 +2,8 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../../lib/prisma";
 
+// this api is to get certain question using unique id
+
 //   localhost:3000/api/Questions/[id]
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {

@@ -1,16 +1,17 @@
 /* eslint-disable import/no-anonymous-default-export */
-// here we should make an api to get all questions in the database for the user
-
-//   localhost:3000/api/Questions/
-
 import { NextApiRequest, NextApiResponse } from "next";
-import prisma from "../../../lib/prisma";
+import prisma from "../../../../lib/prisma";
 
-// this Api is used to get all questions for all users
+// this api is to get questions for a specific user
+
+//   http://localhost:3000/api/Questions/user/[userId]
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
+  const { userId } = req.query;
   try {
-    const questions = await prisma.question.findMany({});
+    const questions = await prisma.question.findMany({
+      where: { userId: Number(userId) },
+    });
     res.status(200).json(questions);
   } catch (error) {
     res.status(400).json({ message: "Something went wrong" });

@@ -3,6 +3,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../../lib/prisma";
 
 //   localhost:3000/api/Answers/[id]
+// get all the answers for a specific question
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { id } = req.query;

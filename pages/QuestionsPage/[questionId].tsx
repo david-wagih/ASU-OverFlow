@@ -100,7 +100,7 @@ export async function getServerSideProps(ctx: any) {
   const questionData = await question.json();
 
   const answers = await fetch(
-    `http://localhost:3000/api/answer/${ctx.query.questionId}`
+    `http://localhost:3000/api/answer/question/${ctx.query.questionId}`
   );
   const answerData = await answers.json();
 

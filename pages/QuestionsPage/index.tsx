@@ -21,6 +21,7 @@ import AddQuestionForm from "../../Components/AddQuestionForm";
 export async function getServerSideProps(ctx: any) {
   const data = await fetch("http://localhost:3000/api/question/");
   const questions = await data.json();
+
   return {
     props: {
       questions,
@@ -151,6 +152,7 @@ const QuestionsPage = (props: { questions: any[] }) => {
                   primary={question.content}
                   secondary={question.createdAt}
                 ></ListItemText>
+                <ListItemText>{question.userEmail}</ListItemText>
               </ListItem>
             ))}
         </List>

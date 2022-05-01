@@ -1,8 +1,8 @@
 /* eslint-disable import/no-anonymous-default-export */
 import { NextApiRequest, NextApiResponse } from "next";
-import prisma from "../../../lib/prisma";
+import prisma from "../../../../lib/prisma";
 
-//   http://localhost:3000/api/answer/[questionId]
+//   http://localhost:3000/api/answer/question/[questionId]
 // get all the answers for a specific question
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {

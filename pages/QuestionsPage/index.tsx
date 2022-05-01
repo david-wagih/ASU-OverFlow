@@ -158,7 +158,7 @@ const QuestionsPage = (props: { questions: any[] }) => {
         </List>
       </Grid>
       <PopUp title="Ask Form" openPopUp={openPopUp} setOpenPopUp={setOpenPopUp}>
-        <AddQuestionForm />
+        <AddQuestionForm openPopUp={openPopUp} setOpenPopUp={setOpenPopUp} />
       </PopUp>
     </>
   );

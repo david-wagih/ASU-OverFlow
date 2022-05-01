@@ -1,108 +1,96 @@
+import { Button, FormGroup, FormLabel, Input } from "@mui/material";
+import Select from "react-select";
+import { useSession } from "next-auth/react";
 import React, { useState } from "react";
 import { CategoryOptions } from "../utils/categoryOptions";
+import { NextApiRequest, NextApiResponse } from "next";
 
 // todo : this method will handle the post request to add new question to the database
 
 const AddQuestionForm = (props: any) => {
+  const { openPopUp, setOpenPopUp } = props;
+  const { data } = useSession();
   const [value, setValue] = useState();
   const [categoryfield, setCategoryfield] = useState();
 
   const handleInputField = (e: any) => {
     setValue(e.target.value);
-    console.log(value);
   };
-  const handleCategoryChosing = (e: any) => {
-    setCategoryfield(e.target.value);
-    console.log(categoryfield);
+  const handleCategoryChosing = (categoryfield: any) => {
+    setCategoryfield(categoryfield);
   };
 
-  const handleSubmit = async (
-    e: { preventDefault: () => void } | undefined
-  ) => {
-    // @ts-ignore
-    e.preventDefault();
+  // todo : need to implement here to post the question in the database
+  const handleSubmit = async (event: any) => {
     try {
+      event.preventDefault();
       const newQuestion = await fetch(
-        "http://localhost:3000/api/questions/create",
+        "http://localhost:3000/api/question/create",
         {
           method: "POST",
           body: JSON.stringify({
-            question: value,
-            category: categoryfield,
-            userId: 1,
+            //@ts-ignore
+            category: categoryfield?.label,
+            content: value,
+            userEmail: data?.user?.email,
           }),
+          headers: {
+            "Content-Type": "application/json",
+          },
         }
       );
-      const newQuestionData = await newQuestion.json();
-      console.log(newQuestionData);
-    } catch (e) {}
+      const newQuestionJson = await newQuestion.json();
+      console.log(newQuestionJson);
+      setOpenPopUp(false);
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (
-    <form
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-between",
-        alignItems: "center",
-      }}
-      onSubmit={handleSubmit}
-    >
-      <label
+    <>
+      <FormGroup
         style={{
-          fontSize: "1.5rem",
-          fontWeight: "bold",
-          marginBottom: "1rem",
+          margin: "auto",
         }}
       >
-        Question
-      </label>
-      <input
-        value={value}
-        onChange={handleInputField}
-        style={{
-          width: "100%",
-          height: "2rem",
-          borderRadius: "5px",
-          border: "1px solid #ccc",
-          padding: "1rem",
-          marginBottom: "1rem",
-        }}
-        type="text"
-      />
-      <select
-        value={categoryfield}
-        onChange={handleCategoryChosing}
-        style={{
-          width: "50%",
-          borderRadius: "5px",
-          border: "1px solid #ccc",
-          padding: "0.5rem",
-          marginBottom: "1rem",
-        }}
-      >
-        <option value="">Select Category</option>
-        {CategoryOptions.map((category: any) => (
-          <option key={category.value} value={category.label}>
-            {category.label}
-          </option>
-        ))}
-      </select>
-      <button
-        style={{
-          width: "100px",
-          borderRadius: "10px",
-          border: "1px solid #ccc",
-          padding: "0.5rem",
-          marginBottom: "1rem",
-          backgroundColor: "#FFE600",
-          color: "black",
-        }}
-        type="submit"
-      >
-        Submit
-      </button>
-    </form>
+        <label
+          style={{
+            fontSize: "0.8rem",
+            fontWeight: "bold",
+            marginBottom: "1rem",
+          }}
+        >
+          Enter Your Question Here
+        </label>
+        <Input
+          value={value}
+          onChange={handleInputField}
+          style={{
+            width: "100%",
+            marginBottom: "3rem",
+          }}
+          type="text"
+        ></Input>
+        <Select
+          onChange={handleCategoryChosing}
+          value={categoryfield}
+          options={CategoryOptions}
+        ></Select>
+        <Button
+          style={{
+            marginTop: "3rem",
+            width: "100px",
+            position: "relative",
+            left: "50%",
+          }}
+          variant="contained"
+          onClick={handleSubmit}
+        >
+          Submit
+        </Button>
+      </FormGroup>
+    </>
   );
 };
 

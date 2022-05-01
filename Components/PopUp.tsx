@@ -20,7 +20,7 @@ const PopUp = (props: any) => {
         margin: "0 auto",
       }}
       open={openPopUp}
-      fullWidth
+      fullScreen
     >
       <DialogTitle style={{}}>
         <div

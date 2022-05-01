@@ -2,16 +2,16 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../../lib/prisma";
 
-// this api is to get User data by his email
+// this api is to get all users with Role User not Admin
 
-// http://localhost:3000/api/User
+// http://localhost:3000/api/user
 
-const getUserByEmail = async (req: NextApiRequest, res: NextApiResponse) => {
+const GetAllUsers = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const user = await prisma.user.findUnique({
+    const user = await prisma.user.findMany({
       where: {
         // @ts-ignore
-        email: req.body.email,
+        role: "USER",
       },
     });
     res.status(200).json(user);
@@ -20,4 +20,4 @@ const getUserByEmail = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 };
 
-export default getUserByEmail;
+export default GetAllUsers;

@@ -23,7 +23,7 @@ const AddQuestionForm = (props: any) => {
     e.preventDefault();
     try {
       const newQuestion = await fetch(
-        "http://localhost:3000/api/Questions/create",
+        "http://localhost:3000/api/questions/create",
         {
           method: "POST",
           body: JSON.stringify({

@@ -6,7 +6,6 @@ import {
   ListItemAvatar,
   ListItemText,
 } from "@mui/material";
-import { useRouter } from "next/router";
 import React from "react";
 import { Row } from "react-bootstrap";
 import UpVoteDownVote from "../../Components/UpVoteDownVote";
@@ -96,12 +95,12 @@ const Question = (props: any) => {
 
 export async function getServerSideProps(ctx: any) {
   const question = await fetch(
-    `http://localhost:3000/api/Questions/${ctx.query.questionId}`
+    `http://localhost:3000/api/questions/${ctx.query.questionId}`
   );
   const questionData = await question.json();
 
   const answers = await fetch(
-    `http://localhost:3000/api/Answers/${ctx.query.questionId}`
+    `http://localhost:3000/api/answers/${ctx.query.questionId}`
   );
   const answerData = await answers.json();
 

@@ -7,10 +7,10 @@ import prisma from "../../../../lib/prisma";
 //   http://localhost:3000/api/Questions/user/[userId]
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const { userId } = req.query;
+  const { userEmail } = req.query;
   try {
     const questions = await prisma.question.findMany({
-      where: { userId: Number(userId) },
+      where: { userEmail: String(userEmail) },
     });
     res.status(200).json(questions);
   } catch (error) {

@@ -10,7 +10,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       data: {
         category: req.body.category,
         content: req.body.content,
-        userId: req.body.userId,
+        userEmail: req.body.userEmail,
       },
     });
     res.status(201).json(newQuestion);

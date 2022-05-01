@@ -4,7 +4,7 @@ import prisma from "../../../../lib/prisma";
 
 // this api is to get questions for a specific user
 
-//   http://localhost:3000/api/Questions/user/[userId]
+//   http://localhost:3000/api/question/user/[userEmail]
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { userEmail } = req.query;

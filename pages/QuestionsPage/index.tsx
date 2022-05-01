@@ -19,7 +19,7 @@ import PopUp from "../../Components/PopUp";
 import AddQuestionForm from "../../Components/AddQuestionForm";
 
 export async function getServerSideProps(ctx: any) {
-  const data = await fetch("http://localhost:3000/api/questions/");
+  const data = await fetch("http://localhost:3000/api/question/");
   const questions = await data.json();
   return {
     props: {

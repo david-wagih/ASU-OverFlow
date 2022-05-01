@@ -2,7 +2,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../../lib/prisma";
 
-// http://localhost:3000/api/Questions/create
+// http://localhost:3000/api/question/create
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   try {

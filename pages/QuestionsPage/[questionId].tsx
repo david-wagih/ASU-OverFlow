@@ -95,12 +95,12 @@ const Question = (props: any) => {
 
 export async function getServerSideProps(ctx: any) {
   const question = await fetch(
-    `http://localhost:3000/api/questions/${ctx.query.questionId}`
+    `http://localhost:3000/api/question/${ctx.query.questionId}`
   );
   const questionData = await question.json();
 
   const answers = await fetch(
-    `http://localhost:3000/api/answers/${ctx.query.questionId}`
+    `http://localhost:3000/api/answer/${ctx.query.questionId}`
   );
   const answerData = await answers.json();
 

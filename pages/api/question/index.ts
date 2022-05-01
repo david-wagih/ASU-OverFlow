@@ -7,6 +7,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../../lib/prisma";
 
 // this Api is used to get all questions for all users
+// http://localhost:3000/api/question/
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   try {

@@ -2,14 +2,14 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../../lib/prisma";
 
-//   localhost:3000/api/Answers/[id]
+//   http://localhost:3000/api/answer/[questionId]
 // get all the answers for a specific question
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const { id } = req.query;
+  const { questionId } = req.query;
   try {
     const answers = await prisma.answer.findMany({
-      where: { questionId: Number(id) },
+      where: { questionId: Number(questionId) },
     });
     res.status(200).json(answers);
   } catch (error) {

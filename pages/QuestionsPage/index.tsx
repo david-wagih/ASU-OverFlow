@@ -49,7 +49,12 @@ const QuestionsPage = (props: { questions: any[] }) => {
 
   return (
     <>
-      <Grid>
+      <Grid
+        style={{
+          margin: "0 auto",
+          maxWidth: "1000px",
+        }}
+      >
         <Row
           style={{
             margin: "auto",
@@ -61,6 +66,14 @@ const QuestionsPage = (props: { questions: any[] }) => {
           }}
         >
           <div style={{ width: 500 }}>
+            <p
+              style={{
+                fontSize: 15,
+                fontWeight: "bold",
+              }}
+            >
+              Choose Your favorite Category and search for a question:
+            </p>
             <Select
               onChange={handleCategoryFilter}
               value={categoryfield}
@@ -125,6 +138,7 @@ const QuestionsPage = (props: { questions: any[] }) => {
               <ListItem
                 style={{
                   cursor: "pointer",
+                  borderRadius: "10px",
                   boxShadow: "0px 0px 2px #000000",
                   marginTop: 20,
                   backgroundColor: "#F5F5F5",
@@ -153,7 +167,7 @@ const QuestionsPage = (props: { questions: any[] }) => {
                   primary={question.content}
                   secondary={question.createdAt}
                 ></ListItemText>
-                <ListItemText>{question.userEmail}</ListItemText>
+                <ListItemText primary={question.userEmail}></ListItemText>
               </ListItem>
             ))}
         </List>

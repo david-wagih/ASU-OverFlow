@@ -24,7 +24,12 @@ const Question = (props: any) => {
   const { questionId } = router.query;
   return (
     <>
-      <Grid>
+      <Grid
+        style={{
+          margin: "0 auto",
+          maxWidth: "1000px",
+        }}
+      >
         <Row>
           <div
             style={{
@@ -70,9 +75,7 @@ const Question = (props: any) => {
         </Row>
         <Button
           style={{
-            width: 150,
-            marginTop: "10px",
-            marginLeft: "20px",
+            width: 100,
           }}
           variant="contained"
           onClick={() => setOpenPopUp(true)}
@@ -84,8 +87,10 @@ const Question = (props: any) => {
             <ListItem
               style={{
                 display: "flex",
+                width: "100%",
                 justifyContent: "space-between",
-                boxShadow: "0px 0px 1px #000000",
+                boxShadow: " 0px 0px 2px #000000",
+                borderRadius: "10px",
                 marginTop: 20,
                 backgroundColor: "#F5F5F5",
               }}

@@ -15,7 +15,7 @@ export default function AnswersRouteshandler(
   } else if (req.method === "DELETE") {
     deleteAnswer(req, res);
   } else if (req.method === "PUT") {
-    updateAnswer(req, res);
+    updateAnswerVotes(req, res);
   }
 }
 
@@ -43,13 +43,13 @@ const deleteAnswer = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 };
 
-const updateAnswer = async (req: NextApiRequest, res: NextApiResponse) => {
+const updateAnswerVotes = async (req: NextApiRequest, res: NextApiResponse) => {
   const { id } = req.query;
-  const { questionId, content } = req.body;
+  const { UpVotes, DownVotes } = req.body;
   try {
     const answer = await prisma.answer.update({
       where: { id: Number(id) },
-      data: { questionId, content },
+      data: { UpVotes, DownVotes },
     });
     res.status(200).json(answer);
   } catch (error) {

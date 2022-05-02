@@ -15,12 +15,15 @@ import PopUp from "../../Components/PopUp";
 import UpVoteDownVote from "../../Components/UpVoteDownVote";
 import InitialsAvatar from "react-initials-avatar";
 import "react-initials-avatar/lib/ReactInitialsAvatar.css";
+import { useSession } from "next-auth/react";
 
 // this is the question details pages
 
 const Question = (props: any) => {
   const [openPopUp, setOpenPopUp] = useState(false);
+  const [voted, setVoted] = useState(false);
   const router = useRouter();
+  const { data } = useSession();
   const { questionId } = router.query;
   return (
     <>
@@ -109,7 +112,12 @@ const Question = (props: any) => {
               ></ListItemText>
               <UpVoteDownVote
                 answerId={answer.id}
-                TotalVotes={answer.TotalVotes}
+                UpVotes={answer.UpVotes}
+                DownVotes={answer.DownVotes}
+                questionId={questionId}
+                userEmail={data?.user?.email}
+                voted={voted}
+                setVoted={setVoted}
               />
             </ListItem>
           ))}

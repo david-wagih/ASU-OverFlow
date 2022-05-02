@@ -4,43 +4,38 @@ import { useSession } from "next-auth/react";
 import React, { useState } from "react";
 import { CategoryOptions } from "../utils/categoryOptions";
 import { NextApiRequest, NextApiResponse } from "next";
+import { Router } from "express";
+import { useRouter } from "next/router";
 
 // todo : this method will handle the post request to add new question to the database
 
-const AddQuestionForm = (props: any) => {
-  const { openPopUp, setOpenPopUp } = props;
+const AddAnswerForm = (props: any) => {
+  const { openPopUp, setOpenPopUp, questionId } = props;
   const { data } = useSession();
   const [value, setValue] = useState();
-  const [categoryfield, setCategoryfield] = useState();
+  const router = useRouter();
 
   const handleInputField = (e: any) => {
     setValue(e.target.value);
-  };
-  const handleCategoryChosing = (categoryfield: any) => {
-    setCategoryfield(categoryfield);
   };
 
   // todo : need to implement here to post the question in the database
   const handleSubmit = async (event: any) => {
     try {
       event.preventDefault();
-      const newQuestion = await fetch(
-        "http://localhost:3000/api/question/create",
-        {
-          method: "POST",
-          body: JSON.stringify({
-            //@ts-ignore
-            category: categoryfield?.label,
-            content: value,
-            userEmail: data?.user?.email,
-          }),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      const newQuestionJson = await newQuestion.json();
-      console.log(newQuestionJson);
+      const newAnswer = await fetch("http://localhost:3000/api/answer/create", {
+        method: "POST",
+        body: JSON.stringify({
+          content: value,
+          questionId: Number(questionId),
+          userEmail: data?.user?.email,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const newAnswerJSON = await newAnswer.json();
+      console.log(newAnswerJSON);
       setOpenPopUp(false);
       window.location.reload();
     } catch (e) {
@@ -62,22 +57,17 @@ const AddQuestionForm = (props: any) => {
             marginBottom: "1rem",
           }}
         >
-          Enter Your Question Here
+          Enter Your Answer Here
         </label>
         <Input
           value={value}
           onChange={handleInputField}
           style={{
             width: "100%",
-            marginBottom: "3rem",
+            marginBottom: "5rem",
           }}
           type="text"
         ></Input>
-        <Select
-          onChange={handleCategoryChosing}
-          value={categoryfield}
-          options={CategoryOptions}
-        ></Select>
         <Button
           style={{
             marginTop: "3rem",
@@ -95,4 +85,4 @@ const AddQuestionForm = (props: any) => {
   );
 };
 
-export default AddQuestionForm;
+export default AddAnswerForm;

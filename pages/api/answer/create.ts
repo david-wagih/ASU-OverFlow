@@ -6,14 +6,14 @@ import prisma from "../../../lib/prisma";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const newQuestion = await prisma.answer.create({
+    const newAnswer = await prisma.answer.create({
       data: {
         content: req.body.content,
         questionId: req.body.questionId,
         userEmail: req.body.userEmail,
       },
     });
-    res.status(201).json(newQuestion);
+    res.status(201).json(newAnswer);
   } catch (e) {
     console.log(e);
   }

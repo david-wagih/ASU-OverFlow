@@ -1,95 +1,127 @@
 import {
   Avatar,
+  Button,
   Grid,
   List,
   ListItem,
   ListItemAvatar,
   ListItemText,
 } from "@mui/material";
-import React from "react";
+import { useRouter } from "next/router";
+import React, { useState } from "react";
 import { Row } from "react-bootstrap";
+import AddAnswerForm from "../../Components/AddAnswerForm";
+import PopUp from "../../Components/PopUp";
 import UpVoteDownVote from "../../Components/UpVoteDownVote";
+import InitialsAvatar from "react-initials-avatar";
+import "react-initials-avatar/lib/ReactInitialsAvatar.css";
 
 // this is the question details pages
 
 const Question = (props: any) => {
+  const [openPopUp, setOpenPopUp] = useState(false);
+  const router = useRouter();
+  const { questionId } = router.query;
   return (
-    <Grid>
-      <Row>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <p
-            style={{
-              fontSize: "45px",
-              fontWeight: "regular",
-              marginLeft: "20px",
-              marginTop: "10px",
-              color: "black",
-            }}
-          >
-            {props.questionData.content}
-          </p>
-        </div>
-      </Row>
-      <Row>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <p>
-            <span
-              style={{
-                fontSize: "15px",
-                fontWeight: 100,
-              }}
-            >
-              Asked at {" " + " "}
-            </span>
-            {props.questionData.createdAt}
-          </p>
-        </div>
-      </Row>
-      <List style={{ width: "100%" }}>
-        {props.answerData.map((answer: any) => (
-          <ListItem
+    <>
+      <Grid>
+        <Row>
+          <div
             style={{
               display: "flex",
-              justifyContent: "space-between",
-              boxShadow: "0px 0px 1px #000000",
-              marginTop: 20,
-              backgroundColor: "#F5F5F5",
+              justifyContent: "center",
+              alignItems: "center",
             }}
-            key={answer.id}
           >
-            <ListItemAvatar>
-              <Avatar
+            <p
+              style={{
+                fontSize: "45px",
+                fontWeight: "regular",
+                marginLeft: "20px",
+                marginTop: "10px",
+                color: "black",
+              }}
+            >
+              {props.questionData.content}
+            </p>
+          </div>
+        </Row>
+
+        <Row>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <p>
+              <span
                 style={{
-                  width: "50px",
-                  height: "50px",
-                  marginRight: "20px",
-                  marginTop: "10px",
+                  fontSize: "15px",
+                  fontWeight: 100,
                 }}
-                // this src should be the avatar of the user who answered the question
-                src="https://i.imgur.com/7jHX3Yb.png"
+              >
+                Asked at {" " + " "}
+              </span>
+              {props.questionData.createdAt}
+            </p>
+          </div>
+        </Row>
+        <Button
+          style={{
+            width: 150,
+            marginTop: "10px",
+            marginLeft: "20px",
+          }}
+          variant="contained"
+          onClick={() => setOpenPopUp(true)}
+        >
+          Add an Answer
+        </Button>
+        <List style={{ width: "100%" }}>
+          {props.answerData.map((answer: any) => (
+            <ListItem
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                boxShadow: "0px 0px 1px #000000",
+                marginTop: 20,
+                backgroundColor: "#F5F5F5",
+              }}
+              key={answer.id}
+            >
+              <ListItemAvatar
+                style={{
+                  marginRight: "20px",
+                }}
+              >
+                <InitialsAvatar name={answer.userEmail} />
+              </ListItemAvatar>
+              <ListItemText
+                primary={answer.content}
+                secondary={answer.createdAt}
+              ></ListItemText>
+              <UpVoteDownVote
+                answerId={answer.id}
+                TotalVotes={answer.TotalVotes}
               />
-            </ListItemAvatar>
-            <ListItemText
-              primary={answer.content}
-              secondary={answer.createdAt}
-            ></ListItemText>
-            <UpVoteDownVote />
-          </ListItem>
-        ))}
-      </List>
-    </Grid>
+            </ListItem>
+          ))}
+        </List>
+      </Grid>
+      <PopUp
+        title="Answer Form"
+        openPopUp={openPopUp}
+        setOpenPopUp={setOpenPopUp}
+      >
+        <AddAnswerForm
+          questionId={questionId}
+          openPopUp={openPopUp}
+          setOpenPopUp={setOpenPopUp}
+        />
+      </PopUp>
+    </>
   );
 };
 

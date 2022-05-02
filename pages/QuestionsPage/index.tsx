@@ -127,6 +127,7 @@ const QuestionsPage = (props: { questions: any[] }) => {
                   cursor: "pointer",
                   boxShadow: "0px 0px 2px #000000",
                   marginTop: 20,
+                  backgroundColor: "#F5F5F5",
                 }}
                 onClick={() => {
                   router.push("/QuestionsPage/" + question.id);

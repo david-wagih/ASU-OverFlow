@@ -5,7 +5,7 @@ import prisma from "../../../../lib/prisma";
 //   http://localhost:3000/api/answer/question/[questionId]
 // get all the answers for a specific question
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+const getAllAnswers = async (req: NextApiRequest, res: NextApiResponse) => {
   const { questionId } = req.query;
   try {
     const answers = await prisma.answer.findMany({
@@ -16,3 +16,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     res.status(400).json({ message: "Something went wrong" });
   }
 };
+
+export default function QuestionRouteshandler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
+  if (req.method === "GET") {
+    getAllAnswers(req, res);
+  }
+}

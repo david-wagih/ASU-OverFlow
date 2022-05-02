@@ -1,8 +1,10 @@
 import { Button, Icon } from "@mui/material";
-import { green, red } from "@mui/material/colors";
 import React, { useState } from "react";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+
+// todo: 1- need to limit the voting for each user for specifically one vote either up or down
+// todo: 2- need to change the GUI to save the Upvotes in one box and the down votes in another box to give clear indication of the vote
 
 const UpVoteDownVote = (props: any) => {
   const [upVoted, setUpVoted] = useState(false);

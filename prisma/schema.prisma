@@ -96,7 +96,8 @@ model Answer {
   updatedAt         DateTime?           @updatedAt
   user              User                @relation(fields: [userEmail], references: [email], onDelete: Cascade)
   question          Question            @relation(fields: [questionId], references: [id], onDelete: Cascade)
-  TotalVotes        Int                 @default(0)
+  UpVotes           Int                 @default(0)
+  DownVotes         Int                 @default(0)
   Reply             Reply[]
   User_Answer_Votes User_Question_Answer[]
 }
@@ -127,7 +128,6 @@ enum Status {
 }
 
 model User_Question_Answer {
-  id         Int       @id @default(autoincrement())
   userEmail  String
   questionId Int
   answerId   Int
@@ -138,4 +138,5 @@ model User_Question_Answer {
   user       User      @relation(fields: [userEmail], references: [email], onDelete: Cascade)
   answer     Answer    @relation(fields: [answerId], references: [id], onDelete: Cascade)
   question   Question  @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  @@unique([userEmail, questionId ,answerId])
 }

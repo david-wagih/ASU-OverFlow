@@ -30,9 +30,11 @@ const updateVote = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const vote = await prisma.user_Question_Answer.update({
       where: {
-        userEmail: String(userEmail),
-        answerId: Number(answerId),
-        questionId: Number(questionId),
+        userEmail_questionId_answerId: {
+          userEmail: userEmail,
+          questionId: Number(questionId),
+          answerId: Number(answerId),
+        },
       },
       data: {
         upVoted: upVoted,

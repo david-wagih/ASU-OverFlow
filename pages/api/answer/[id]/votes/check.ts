@@ -10,15 +10,18 @@ const checkifVoted = async (req: NextApiRequest, res: NextApiResponse) => {
     const vote = await prisma.user_Question_Answer.findUnique({
       where: {
         userEmail_questionId_answerId: {
-          userEmail: userEmail,
+          userEmail: String(userEmail),
           questionId: Number(questionId),
-          answerId: Number(answerId),
         },
       },
     });
-    res.status(200).json(vote);
+    if (vote !== null) {
+      res.status(200).json(vote);
+    } else {
+      res.status(400).json({ message: "You didn't vote before " });
+    }
   } catch (e) {
-    res.status(400).json({ message: "Something went wrong" });
+    res.status(400).json({ message: "You didn't vote before " });
   }
 };
 

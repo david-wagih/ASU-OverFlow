@@ -44,11 +44,10 @@ const deleteAnswer = async (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 const updateAnswerVotes = async (req: NextApiRequest, res: NextApiResponse) => {
-  const { id } = req.query;
-  const { UpVotes, DownVotes } = req.body;
+  const { UpVotes, DownVotes, answerId } = req.body;
   try {
     const answer = await prisma.answer.update({
-      where: { id: Number(id) },
+      where: { id: Number(answerId) },
       data: { UpVotes, DownVotes },
     });
     res.status(200).json(answer);

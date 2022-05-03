@@ -3,32 +3,18 @@ import React, { useState } from "react";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
-// todo: 1- need to limit the voting for each user for specifically one vote either up or down
-// todo: 2- need to change the GUI to save the Upvotes in one box and the down votes in another box to give clear indication of the vote
-
 const UpVoteDownVote = (props: any) => {
   const { UpVotes, DownVotes, answerId, questionId, userEmail } = props;
 
+  // todo: 1- need to limit the voting for each user for specifically one vote either up or down
+  // todo: 2- need to change the GUI to save the Upvotes in one box and the down votes in another box to give clear indication of the vote
   const handleAddingVote = async () => {
     try {
-      const res = await fetch(
-        `http://localhost:3000/api/answer/${answerId}/votes/check`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            userEmail,
-            answerId,
-            questionId,
-          }),
-        }
-      );
-      const response = await res.json();
-      if (!response) {
-        const createVote = await fetch(
-          `http://localhost:3000/api/answer/${answerId}/votes`,
+      // check if user has voted on that answer before or not
+
+      try {
+        const hasVoted = await fetch(
+          `http://localhost:3000/api/answer/${answerId}/votes/check`,
           {
             method: "POST",
             headers: {
@@ -36,128 +22,63 @@ const UpVoteDownVote = (props: any) => {
             },
             body: JSON.stringify({
               userEmail: userEmail,
-              answerId: Number(answerId),
-              questionId: Number(questionId),
-              upVoted: true,
-              downVoted: false,
+              questionId: questionId,
+              answerId: answerId,
             }),
           }
         );
-        const createVoteData = await createVote.json();
-        console.log(createVoteData);
-      } else {
-        const updateVote = await fetch(
-          `http://localhost:3000/api/answer/${answerId}/votes`,
-          {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              userEmail: userEmail,
-              answerId: Number(answerId),
-              questionId: Number(questionId),
-              upVoted: true,
-              downVoted: false,
-            }),
-          }
-        );
-        const updateVoteData = await updateVote.json();
-        console.log(updateVoteData);
-      }
-      const addUpVote = await fetch(
-        `http://localhost:3000/api/answer/${answerId}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            UpVotes: UpVotes + 1,
-            DownVotes: DownVotes,
-          }),
+        if (hasVoted.status === 200) {
+          alert("You have already voted on this answer");
+        } else if (hasVoted.status === 400) {
+          // add new vote then
+          const addVote = await fetch(
+            `http://localhost:3000/api/answer/${answerId}/votes`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                userEmail: userEmail,
+                questionId: questionId,
+                answerId: answerId,
+                upVoted: true,
+                downVoted: false,
+              }),
+            }
+          );
+          const addVoteData = await addVote.json();
+          console.log(addVoteData);
+
+          // update the votes in the database
+          const updateAnswerUpVotes = await fetch(
+            `http://localhost:3000/api/answer/${answerId}`,
+            {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                answerId,
+                UpVotes: UpVotes + 1,
+                DownVotes: DownVotes,
+              }),
+            }
+          );
+          const updateAnswerUpVotesData = await updateAnswerUpVotes.json();
+          console.log(updateAnswerUpVotesData);
         }
-      );
-      const addUpVoteJson = await addUpVote.json();
-      window.location.reload();
-      console.log(addUpVoteJson);
+      } catch (e) {
+        console.log(e);
+      }
     } catch (e) {
       console.log(e);
     }
   };
   const handleRemovingVote = async () => {
     try {
-      const res = await fetch(
-        `http://localhost:3000/api/answer/${answerId}/votes/check`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            userEmail,
-            answerId,
-            questionId,
-          }),
-        }
-      );
-      const response = await res.json();
-      if (!response) {
-        const createVote = await fetch(
-          `http://localhost:3000/api/answer/${answerId}/votes`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              userEmail: userEmail,
-              answerId: Number(answerId),
-              questionId: Number(questionId),
-              upVoted: false,
-              downVoted: true,
-            }),
-          }
-        );
-        const createVoteData = await createVote.json();
-        console.log(createVoteData);
-      } else {
-        const updateVote = await fetch(
-          `http://localhost:3000/api/answer/${answerId}/votes`,
-          {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              userEmail: userEmail,
-              answerId: Number(answerId),
-              questionId: Number(questionId),
-              upVoted: false,
-              downVoted: true,
-            }),
-          }
-        );
-      }
-      const addDownVote = await fetch(
-        `http://localhost:3000/api/answer/${answerId}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            UpVotes: UpVotes,
-            DownVotes: DownVotes + 1,
-          }),
-        }
-      );
-      const addDownVoteJson = await addDownVote.json();
-      window.location.reload();
-      console.log(addDownVoteJson);
-    } catch (e) {
-      console.log(e);
-    }
+      // check if user has voted on that answer before or not
+    } catch (e) {}
   };
 
   return (
@@ -178,7 +99,7 @@ const UpVoteDownVote = (props: any) => {
           padding: "1rem",
         }}
       >
-        [{UpVotes}]
+        {UpVotes}
       </p>
 
       <div
@@ -205,51 +126,10 @@ const UpVoteDownVote = (props: any) => {
           marginRight: "1rem",
         }}
       >
-        [{DownVotes}]
+        {DownVotes}
       </p>
     </div>
   );
 };
 
 export default UpVoteDownVote;
-
-// // here we solved the problem of variables values gone after reloading using this custom hook
-// //Hook
-// function useLocalStorage(key: string, initialValue: Boolean) {
-//   //State to store our value
-//   //Pass initial state function to useState so logic is only executed once
-//   const [storedValue, setStoredValue] = useState(() => {
-//     if (typeof window === "undefined") {
-//       return initialValue;
-//     }
-//     try {
-//       //Get from local storage by key
-//       const item = window.localStorage.getItem(key);
-//       //Parse stored json or if none return initialValue
-//       return item ? JSON.parse(item) : initialValue;
-//     } catch (error) {
-//       //If error also return initialValue
-//       console.log(error);
-//       return initialValue;
-//     }
-//   });
-//   //Return a wrapped version of useState's setter function that ...
-//   //... persists the new value to localStorage.
-//   const setValue = (value: (arg0: any) => any) => {
-//     try {
-//       //Allow value to be a function so we have same API as useState
-//       const valueToStore =
-//         value instanceof Function ? value(storedValue) : value;
-//       //Save state
-//       setStoredValue(valueToStore);
-//       //Save to local storage
-//       if (typeof window !== "undefined") {
-//         window.localStorage.setItem(key, JSON.stringify(valueToStore));
-//       }
-//     } catch (error) {
-//       //A more advanced implementation would handle the error case
-//       console.log(error);
-//     }
-//   };
-//   return [storedValue, setValue];
-//}

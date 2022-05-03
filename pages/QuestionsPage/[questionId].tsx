@@ -21,7 +21,6 @@ import { useSession } from "next-auth/react";
 
 const Question = (props: any) => {
   const [openPopUp, setOpenPopUp] = useState(false);
-  const [voted, setVoted] = useState(false);
   const router = useRouter();
   const { data } = useSession();
   const { questionId } = router.query;
@@ -116,8 +115,6 @@ const Question = (props: any) => {
                 DownVotes={answer.DownVotes}
                 questionId={questionId}
                 userEmail={data?.user?.email}
-                voted={voted}
-                setVoted={setVoted}
               />
             </ListItem>
           ))}

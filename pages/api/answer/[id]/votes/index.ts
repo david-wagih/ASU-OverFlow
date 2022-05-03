@@ -3,9 +3,9 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../../../../lib/prisma";
 
-// this api is to update the value of Total Votes for each Answer
-
 //   http://localhost:3000/api/answer/[id]/votes
+
+// this one is to say that i voted up or down for the first time
 
 const postVote = async (req: NextApiRequest, res: NextApiResponse) => {
   const { userEmail, answerId, questionId, upVoted, downVoted } = req.body;
@@ -24,6 +24,8 @@ const postVote = async (req: NextApiRequest, res: NextApiResponse) => {
     res.status(400).json({ message: "Something went wrong" });
   }
 };
+
+// this one is to update my vote for the same answer
 
 const updateVote = async (req: NextApiRequest, res: NextApiResponse) => {
   const { userEmail, answerId, questionId, upVoted, downVoted } = req.body;

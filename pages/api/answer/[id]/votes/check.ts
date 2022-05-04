@@ -19,8 +19,8 @@ const checkifVoted = async (req: NextApiRequest, res: NextApiResponse) => {
     if (vote) {
       res.status(200).json({
         voted: true,
-        up: vote.upVoted,
-        down: vote.downVoted,
+        upVoted: vote.upVoted,
+        downVoted: vote.downVoted,
       });
     } else {
       res.status(200).json({

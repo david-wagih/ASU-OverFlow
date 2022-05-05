@@ -32,7 +32,7 @@ const getAnswer = async (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 const deleteAnswer = async (req: NextApiRequest, res: NextApiResponse) => {
-  const { id } = req.query;
+  const { id } = req.body;
   try {
     const answer = await prisma.answer.delete({
       where: { id: Number(id) },

@@ -16,6 +16,9 @@ import UpVoteDownVote from "../../Components/UpVoteDownVote";
 import InitialsAvatar from "react-initials-avatar";
 import "react-initials-avatar/lib/ReactInitialsAvatar.css";
 import { useSession } from "next-auth/react";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import EditQuestionForm from "../../Components/EditQuestionForm";
 
 // this is the question details pages
 
@@ -24,6 +27,27 @@ const Question = (props: any) => {
   const router = useRouter();
   const { data } = useSession();
   const { questionId } = router.query;
+  const [openQuestionPopUp, setOpenQuestionPopUp] = useState(false);
+
+  // todo : those functions for handling updating and deleting questions
+  const handleDeleteQuestion = async () => {
+    const deleteQuestion = await fetch(
+      `http://localhost:3000/api/question/${questionId}`,
+      {
+        method: "DELETE",
+
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: questionId,
+        }),
+      }
+    );
+    const deleteQuestionJSON = await deleteQuestion.json();
+    console.log(deleteQuestionJSON);
+    router.push("/QuestionsPage");
+  };
   return (
     <>
       <Grid
@@ -53,7 +77,21 @@ const Question = (props: any) => {
             </p>
           </div>
         </Row>
-
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            marginBottom: "20px",
+          }}
+        >
+          <Button onClick={() => setOpenQuestionPopUp(true)}>
+            <EditIcon color="success" />
+          </Button>
+          <Button onClick={handleDeleteQuestion}>
+            <DeleteForeverIcon color="error" />
+          </Button>
+        </div>
         <Row>
           <div
             style={{
@@ -129,6 +167,17 @@ const Question = (props: any) => {
           questionId={questionId}
           openPopUp={openPopUp}
           setOpenPopUp={setOpenPopUp}
+        />
+      </PopUp>
+      <PopUp
+        title="Edit Question"
+        openPopUp={openQuestionPopUp}
+        setOpenPopUp={setOpenQuestionPopUp}
+      >
+        <EditQuestionForm
+          questionId={questionId}
+          openPopUp={openQuestionPopUp}
+          setOpenPopUp={setOpenQuestionPopUp}
         />
       </PopUp>
     </>

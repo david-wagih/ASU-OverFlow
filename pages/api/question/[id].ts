@@ -32,7 +32,7 @@ const getQuestion = async (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 const deleteQuestion = async (req: NextApiRequest, res: NextApiResponse) => {
-  const { id } = req.query;
+  const { id } = req.body;
   try {
     const questions = await prisma.question.delete({
       where: { id: Number(id) },
@@ -44,12 +44,11 @@ const deleteQuestion = async (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 const updateQuestion = async (req: NextApiRequest, res: NextApiResponse) => {
-  const { id } = req.query;
-  const { category, content } = req.body;
+  const { id, content } = req.body;
   try {
     const questions = await prisma.question.update({
       where: { id: Number(id) },
-      data: { category, content },
+      data: { content },
     });
     res.status(200).json(questions);
   } catch (error) {

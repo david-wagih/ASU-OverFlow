@@ -2,6 +2,7 @@ import {
   Avatar,
   Button,
   Grid,
+  Icon,
   List,
   ListItem,
   ListItemAvatar,
@@ -20,6 +21,8 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import EditQuestionForm from "../../Components/EditQuestionForm";
 import EditAnswerForm from "../../Components/EditAnswerForm";
+import AddReplyForm from "../../Components/AddReplyForm";
+import { Typography } from "@material-ui/core";
 
 // this is the question details pages
 
@@ -30,8 +33,8 @@ const Question = (props: any) => {
   const { questionId } = router.query;
   const [openQuestionPopUp, setOpenQuestionPopUp] = useState(false);
   const [openAnswerPopUp, setOpenAnswerPopUp] = useState(false);
+  const [openReplyPopUp, setOpenReplyPopUp] = useState(false);
 
-  // todo : those functions for handling updating and deleting questions
   const handleDeleteQuestion = async () => {
     const deleteQuestion = await fetch(
       `http://localhost:3000/api/question/${questionId}`,
@@ -51,7 +54,6 @@ const Question = (props: any) => {
     router.push("/QuestionsPage");
   };
 
-  // todo
   const handleEditAnswer = async () => {
     setOpenAnswerPopUp(true);
   };
@@ -81,8 +83,7 @@ const Question = (props: any) => {
     <>
       <Grid
         style={{
-          margin: "0 auto",
-          maxWidth: "1000px",
+          margin: "20px",
         }}
       >
         <Row>
@@ -161,7 +162,7 @@ const Question = (props: any) => {
                 boxShadow: " 0px 0px 2px #000000",
                 borderRadius: "10px",
                 marginTop: 20,
-                backgroundColor: "#F5F5F5",
+                backgroundColor: answer.isSolution ? "#FFEE00" : "white",
               }}
               key={answer.id}
             >
@@ -194,6 +195,17 @@ const Question = (props: any) => {
                   setOpenPopUp={setOpenAnswerPopUp}
                 />
               </PopUp>
+              <PopUp
+                title="Add a Reply"
+                openPopUp={openReplyPopUp}
+                setOpenPopUp={setOpenReplyPopUp}
+              >
+                <AddReplyForm
+                  answerId={answer.id}
+                  openPopUp={openReplyPopUp}
+                  setOpenPopUp={setOpenReplyPopUp}
+                />
+              </PopUp>
               <div
                 style={{
                   display: "flex",
@@ -209,6 +221,100 @@ const Question = (props: any) => {
                   onClick={() => handleDeleteAnswer({ answerId: answer.id })}
                 >
                   <DeleteForeverIcon color="error" />
+                </Button>
+                <Button
+                  variant="contained"
+                  style={{
+                    marginLeft: "20px",
+                  }}
+                  onClick={() => setOpenReplyPopUp(true)}
+                >
+                  <Typography
+                    style={{
+                      fontSize: "15px",
+                      fontWeight: "regular",
+                    }}
+                  >
+                    new Reply
+                  </Typography>
+                </Button>
+                <Button
+                  variant="contained"
+                  style={{
+                    marginLeft: "20px",
+                  }}
+                  onClick={() => router.push(`/AnswerPage/${answer.id}`)}
+                >
+                  <Typography
+                    style={{
+                      fontSize: "15px",
+                      fontWeight: "regular",
+                    }}
+                  >
+                    View All Replies
+                  </Typography>
+                </Button>
+                <Button
+                  onClick={async () => {
+                    await fetch(
+                      `http://localhost:3000/api/answer/${answer.id}/solution`,
+                      {
+                        method: "PUT",
+                        headers: {
+                          "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                          answerId: answer.id,
+                          isSolution: true,
+                        }),
+                      }
+                    );
+                    window.location.reload();
+                  }}
+                  variant="contained"
+                  style={{
+                    marginLeft: "20px",
+                  }}
+                >
+                  <Typography
+                    style={{
+                      fontSize: "15px",
+                      fontWeight: "regular",
+                    }}
+                  >
+                    Select as Solution
+                  </Typography>
+                </Button>
+                <Button
+                  onClick={async () => {
+                    await fetch(
+                      `http://localhost:3000/api/answer/${answer.id}/solution`,
+                      {
+                        method: "PUT",
+                        headers: {
+                          "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                          answerId: answer.id,
+                          isSolution: false,
+                        }),
+                      }
+                    );
+                    window.location.reload();
+                  }}
+                  variant="contained"
+                  style={{
+                    marginLeft: "20px",
+                  }}
+                >
+                  <Typography
+                    style={{
+                      fontSize: "15px",
+                      fontWeight: "regular",
+                    }}
+                  >
+                    Not a Solution
+                  </Typography>
                 </Button>
               </div>
             </ListItem>

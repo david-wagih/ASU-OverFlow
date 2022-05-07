@@ -25,6 +25,7 @@ const QuestionsPage = (props: any) => {
   const [value, setValue] = useState("");
   const [categoryfield, setCategoryfield] = useState("");
   const router = useRouter();
+  const { data } = useSession();
 
   const handleSearchField = (e: any) => {
     setValue(e.target.value);
@@ -35,8 +36,21 @@ const QuestionsPage = (props: any) => {
     console.log(categoryfield);
   };
 
-  // this is for the Modal state
+  const handleRequestPrivilege = async () => {
+    const newRequest = await fetch("http://localhost:3000/api/user/requests", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userEmail: data?.user?.email,
+      }),
+    });
+    const newRequestData = await newRequest.json();
+    console.log(newRequestData);
+  };
 
+  // this is for the Modal state
   const [openPopUp, setOpenPopUp] = useState(false);
 
   return (
@@ -117,12 +131,27 @@ const QuestionsPage = (props: any) => {
           <Button
             style={{
               width: 150,
+              borderRadius: "10px",
             }}
             variant="contained"
             onClick={() => setOpenPopUp(true)}
             disabled={props.userData.isRestricted ? true : false}
           >
             Ask Question
+          </Button>
+          <Button
+            style={{
+              width: 300,
+              marginLeft: "20px",
+              borderRadius: "10px",
+              display:
+                props.userData.hasPrivilege === false ? "inline-block" : "none",
+            }}
+            variant="contained"
+            color="warning"
+            onClick={handleRequestPrivilege}
+          >
+            Request Answer Privilege
           </Button>
         </Row>
         <List style={{ width: "100%" }}>

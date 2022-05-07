@@ -1,4 +1,4 @@
-import { Button, FormGroup, FormLabel, Input } from "@mui/material";
+import { Button, FormGroup, FormLabel, Input, TextField } from "@mui/material";
 import Select from "react-select";
 import { useSession } from "next-auth/react";
 import React, { useState } from "react";
@@ -13,6 +13,7 @@ const AddAnswerForm = (props: any) => {
   const { openPopUp, setOpenPopUp, questionId } = props;
   const { data } = useSession();
   const [value, setValue] = useState();
+  const [error, setError] = useState({});
   const router = useRouter();
 
   const handleInputField = (e: any) => {
@@ -59,15 +60,18 @@ const AddAnswerForm = (props: any) => {
         >
           Enter Your Answer Here
         </label>
-        <Input
+
+        <TextField
+          style={{
+            marginTop: "5px",
+            marginBottom: "5px",
+          }}
           value={value}
           onChange={handleInputField}
-          style={{
-            width: "100%",
-            marginBottom: "5rem",
-          }}
-          type="text"
-        ></Input>
+          variant="outlined"
+          helperText="Make the answer not more than 80 characters"
+        ></TextField>
+
         <Button
           style={{
             marginTop: "3rem",

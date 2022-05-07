@@ -9,6 +9,7 @@ import {
   ListItem,
   ListItemAvatar,
   ListItemText,
+  TextField,
 } from "@mui/material";
 import React, { useState } from "react";
 import { Row } from "react-bootstrap";
@@ -93,13 +94,25 @@ const QuestionsPage = (props: any) => {
               justifyContent: "center",
             }}
           >
-            <Input
-              onChange={handleSearchField}
+            <TextField
+              style={{
+                marginTop: "5px",
+                marginBottom: "5px",
+              }}
               placeholder="Search"
-              type="text"
+              onChange={handleSearchField}
               value={value}
-            ></Input>
-            <Icon>search</Icon>
+              helperText="make the Search Keyword not more than 54 characters"
+            ></TextField>
+            <Icon
+              style={{
+                marginLeft: "20px",
+                marginTop: "20px",
+                marginBottom: "5px",
+              }}
+            >
+              search
+            </Icon>
           </div>
           <Button
             style={{

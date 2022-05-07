@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import {
   Avatar,
   Button,
@@ -17,19 +18,9 @@ import { useRouter } from "next/router";
 import { CategoriesIcons } from "../../utils/CategoriesIcons";
 import PopUp from "../../Components/PopUp";
 import AddQuestionForm from "../../Components/AddQuestionForm";
+import { getSession, useSession } from "next-auth/react";
 
-export async function getServerSideProps(ctx: any) {
-  const data = await fetch("http://localhost:3000/api/question/");
-  const questions = await data.json();
-
-  return {
-    props: {
-      questions,
-    },
-  };
-}
-
-const QuestionsPage = (props: { questions: any[] }) => {
+const QuestionsPage = (props: any) => {
   const [value, setValue] = useState("");
   const [categoryfield, setCategoryfield] = useState("");
   const router = useRouter();
@@ -116,13 +107,14 @@ const QuestionsPage = (props: { questions: any[] }) => {
             }}
             variant="contained"
             onClick={() => setOpenPopUp(true)}
+            disabled={props.userData.isRestricted ? true : false}
           >
             Ask Question
           </Button>
         </Row>
         <List style={{ width: "100%" }}>
           {props.questions
-            .filter((val) => {
+            .filter((val: { category: any; content: string }) => {
               if (value === "" && categoryfield === "") {
                 return val;
               } else if (
@@ -178,5 +170,23 @@ const QuestionsPage = (props: { questions: any[] }) => {
     </>
   );
 };
+
+export async function getServerSideProps(ctx: any) {
+  const session = await getSession(ctx);
+  const data1 = await fetch("http://localhost:3000/api/question/");
+  const questions = await data1.json();
+
+  const user = await fetch(
+    `http://localhost:3000/api/user/${session?.user?.email}`
+  );
+  const userData = await user.json();
+
+  return {
+    props: {
+      questions,
+      userData,
+    },
+  };
+}
 
 export default QuestionsPage;

@@ -16,7 +16,7 @@ import PopUp from "../../Components/PopUp";
 import UpVoteDownVote from "../../Components/UpVoteDownVote";
 import InitialsAvatar from "react-initials-avatar";
 import "react-initials-avatar/lib/ReactInitialsAvatar.css";
-import { useSession } from "next-auth/react";
+import { getSession, useSession } from "next-auth/react";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import EditQuestionForm from "../../Components/EditQuestionForm";
@@ -149,6 +149,12 @@ const Question = (props: any) => {
           }}
           variant="contained"
           onClick={() => setOpenPopUp(true)}
+          disabled={
+            props.userData.isRestricted ||
+            props.userRequestData.status !== "accepted"
+              ? true
+              : false
+          }
         >
           Add an Answer
         </Button>
@@ -348,6 +354,7 @@ const Question = (props: any) => {
 };
 
 export async function getServerSideProps(ctx: any) {
+  const session = await getSession(ctx);
   const question = await fetch(
     `http://localhost:3000/api/question/${ctx.query.questionId}`
   );
@@ -358,10 +365,30 @@ export async function getServerSideProps(ctx: any) {
   );
   const answerData = await answers.json();
 
+  const user = await fetch(
+    `http://localhost:3000/api/user/${session?.user?.email}`
+  );
+  const userData = await user.json();
+
+  const userRequest = await fetch(
+    "http://localhost:3000/api/user/requests/status",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userEmail: session?.user?.email,
+      }),
+    }
+  );
+  const userRequestData = await userRequest.json();
   return {
     props: {
       questionData,
       answerData,
+      userData,
+      userRequestData,
     },
   };
 }

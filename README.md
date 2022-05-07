@@ -3,6 +3,7 @@
 ## We are working with Postgres Database and Prisma Technologies and Node JS
 
 - first of All make sure to install Node on your machine and make sure that you install this version 16.14.0.
+  <https://nodejs.org/en/>
 
 ## Create thos enviroment variables in a .env file as we will need them
 
@@ -14,7 +15,9 @@
 
 ## to setup and connect to the database you must first install postgres on your machine
 
-- After you installed postgres on your machine and made sure that you add the required SDK into your enviroment variables
+- Link to install Postgres <https://www.postgresql.org/download/>
+- After you installed postgres on your machine
+- open your Postgres Folder you downloaded and then go in the bin folder and then copy the file path and add it in the path variable in the System's enviroment Variables on your machine
 - Open the Command line and type psql -U postgres
 - then write your password when installed postgreSQL
 - CREATE DATABASE mydb;

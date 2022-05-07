@@ -1,6 +1,8 @@
 # Instructions to run this Project
 
-## We are working with Postgres Database and Prisma Technologies
+## We are working with Postgres Database and Prisma Technologies and Node JS
+
+- first of All make sure to install Node on your machine and make sure that you install this version 16.14.0.
 
 ## Create thos enviroment variables in a .env file as we will need them
 

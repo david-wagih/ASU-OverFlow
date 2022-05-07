@@ -180,7 +180,7 @@ const Question = (props: any) => {
           variant="contained"
           color="warning"
           onClick={handleRequestPrivilege}
-          disabled={props.userRequestData.status !== "accepted" ? true : false}
+          disabled={props.userRequestData.status === "pending" ? true : false}
         >
           Request Answer Privilege
         </Button>
@@ -396,16 +396,14 @@ export async function getServerSideProps(ctx: any) {
   );
   const userData = await user.json();
 
+  // todo : there is an issue here in fetching user Request when there is no one yet
   const userRequest = await fetch(
-    "http://localhost:3000/api/user/requests/status",
+    `http://localhost:3000/api/user/requests/${session?.user?.email}`,
     {
-      method: "POST",
+      method: "GET",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        userEmail: session?.user?.email,
-      }),
     }
   );
   const userRequestData = await userRequest.json();

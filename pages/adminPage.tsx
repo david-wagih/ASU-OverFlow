@@ -66,6 +66,18 @@ const adminPage = (props: any) => {
                       status: "accepted",
                     }),
                   });
+                  await fetch(
+                    `http://localhost:3000/api/user/${request.userEmail}`,
+                    {
+                      method: "PUT",
+                      headers: {
+                        "Content-Type": "application/json",
+                      },
+                      body: JSON.stringify({
+                        hasPrivilege: true,
+                      }),
+                    }
+                  );
                   window.location.reload();
                 }}
               >

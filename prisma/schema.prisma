@@ -47,7 +47,8 @@ model User {
   sessions          Session[]
   Question          Question[]
   Answer            Answer[]
-  isRestricted      Boolean?
+  isRestricted      Boolean             @default(false)
+  hasPrivilege      Boolean             @default(false)
   Reply             Reply[]
   role              Role                @default(USER)
   request           Request?

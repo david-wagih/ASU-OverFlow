@@ -35,12 +35,25 @@ const Question = (props: any) => {
   const [openAnswerPopUp, setOpenAnswerPopUp] = useState(false);
   const [openReplyPopUp, setOpenReplyPopUp] = useState(false);
 
+  const handleRequestPrivilege = async () => {
+    const newRequest = await fetch("http://localhost:3000/api/user/requests", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userEmail: data?.user?.email,
+      }),
+    });
+    const newRequestData = await newRequest.json();
+    console.log(newRequestData);
+  };
+
   const handleDeleteQuestion = async () => {
     const deleteQuestion = await fetch(
       `http://localhost:3000/api/question/${questionId}`,
       {
         method: "DELETE",
-
         headers: {
           "Content-Type": "application/json",
         },
@@ -150,13 +163,26 @@ const Question = (props: any) => {
           variant="contained"
           onClick={() => setOpenPopUp(true)}
           disabled={
-            props.userData.isRestricted ||
-            props.userRequestData.status !== "accepted"
+            props.userData.isRestricted || props.userData.hasPrivilege === false
               ? true
               : false
           }
         >
           Add an Answer
+        </Button>
+        <Button
+          style={{
+            width: 300,
+            marginLeft: "20px",
+            display:
+              props.userData.hasPrivilege === false ? "inline-block" : "none",
+          }}
+          variant="contained"
+          color="warning"
+          onClick={handleRequestPrivilege}
+          disabled={props.userRequestData.status !== "accepted" ? true : false}
+        >
+          Request Answer Privilege
         </Button>
         <List style={{ width: "100%" }}>
           {props.answerData.map((answer: any) => (

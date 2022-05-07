@@ -10,10 +10,13 @@
 - JWT_SECRET = dazy123\*
 - NEXTAUTH_URL = "http://localhost:3000"
 
-## to setup and connect to the database
+## to setup and connect to the database you must first install postgres on your machine
 
-- CREATE USER postgres WITH PASSWORD 'Davidwagih123';
+- After you installed postgres on your machine and made sure that it is running correctly do the following
+- Open the Command line and type psql -U "yourUserinPostgre"
+- then write your User 's password
 - CREATE DATABASE mydb;
+- CREATE USER postgres WITH PASSWORD 'Davidwagih123';
 - GRANT ALL PRIVILEGES ON DATABASE mydb TO postgres;
 
 ### you now have created the needed setup to connect to the database

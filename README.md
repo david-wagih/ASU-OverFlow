@@ -6,7 +6,7 @@
 
 ## Create thos enviroment variables in a .env file as we will need them
 
-- DATABASE_URL="postgresql://postgres:Davidwagih123@localhost:5432/mydb?schema=public"
+- DATABASE_URL="postgresql://software:Project@localhost:5432/mydb?schema=public"
 - GITHUB_ID = 1879816fe56414010309
 - GITHUB_SECRET = 49a1eae43382ca1e4f98596efb1a5fa6861463d5
 - JWT_SECRET = dazy123\*
@@ -14,12 +14,13 @@
 
 ## to setup and connect to the database you must first install postgres on your machine
 
-- After you installed postgres on your machine and made sure that it is running correctly do the following
-- Open the Command line and type psql -U "yourUserinPostgre"
-- then write your User 's password
+- After you installed postgres on your machine and made sure that you add the required SDK into your enviroment variables
+- Open the Command line and type psql -U postgres
+- then write your password when installed postgreSQL
 - CREATE DATABASE mydb;
-- CREATE USER postgres WITH PASSWORD 'Davidwagih123';
-- GRANT ALL PRIVILEGES ON DATABASE mydb TO postgres;
+- CREATE USER software WITH PASSWORD 'Project';
+- GRANT ALL PRIVILEGES ON DATABASE mydb TO software;
+- ALTER USER software WITH SUPERUSER;
 
 ### you now have created the needed setup to connect to the database
 

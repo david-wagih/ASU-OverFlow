@@ -9,11 +9,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 
   // @ts-nocheck
   useEffect(() => {
-    if (
-      status === "unauthenticated" ||
-      // @ts-ignore
-      !adminEmails.includes(String(data.user?.email))
-    ) {
+    if (status === "unauthenticated") {
       router.push("/");
     }
     // @ts-ignore

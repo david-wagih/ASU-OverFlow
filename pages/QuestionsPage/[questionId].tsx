@@ -396,7 +396,6 @@ export async function getServerSideProps(ctx: any) {
   );
   const userData = await user.json();
 
-  // todo : there is an issue here in fetching user Request when there is no one yet
   const userRequest = await fetch(
     `http://localhost:3000/api/user/requests/${session?.user?.email}`,
     {

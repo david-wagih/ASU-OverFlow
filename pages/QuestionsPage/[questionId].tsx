@@ -102,7 +102,7 @@ const Question = (props: any) => {
                 color: "black",
               }}
             >
-              {props.questionData.content}
+              {props?.questionData?.content}
             </p>
           </div>
         </Row>
@@ -138,7 +138,7 @@ const Question = (props: any) => {
               >
                 Asked at {" " + " "}
               </span>
-              {props.questionData.createdAt}
+              {props?.questionData?.createdAt}
             </p>
           </div>
         </Row>
@@ -149,7 +149,8 @@ const Question = (props: any) => {
           variant="contained"
           onClick={() => setOpenPopUp(true)}
           disabled={
-            props.userData.isRestricted || props.userData.hasPrivilege === false
+            props?.userData?.isRestricted ||
+            props?.userData?.hasPrivilege === false
               ? true
               : false
           }
@@ -158,7 +159,7 @@ const Question = (props: any) => {
         </Button>
 
         <List style={{ width: "100%" }}>
-          {props.answerData.map((answer: any) => (
+          {props?.answerData?.map((answer: any) => (
             <ListItem
               style={{
                 display: "flex",

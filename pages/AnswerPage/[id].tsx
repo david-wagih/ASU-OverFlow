@@ -25,7 +25,7 @@ const AnswerDetailPage = (props: any) => {
         All Replies
       </h1>
       <List>
-        {props.AllRepliesJSON.map((reply: any) => (
+        {props?.AllRepliesJSON?.map((reply: any) => (
           <ListItem
             style={{
               display: "flex",
@@ -75,25 +75,33 @@ const AnswerDetailPage = (props: any) => {
 };
 
 export async function getServerSideProps(ctx: any) {
-  const { id } = ctx.query;
-  const AllReplies = await fetch(
-    `http://localhost:3000/api/answer/${id}/reply`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
+  try {
+    const { id } = ctx.query;
+    const AllReplies = await fetch(
+      `http://localhost:3000/api/answer/${id}/reply`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          answerId: id,
+        }),
+      }
+    );
+    const AllRepliesJSON = AllReplies ? await AllReplies.json() : null;
+    return {
+      props: {
+        AllRepliesJSON,
       },
-      body: JSON.stringify({
-        answerId: id,
-      }),
-    }
-  );
-  const AllRepliesJSON = await AllReplies.json();
-  return {
-    props: {
-      AllRepliesJSON,
-    },
-  };
+    };
+  } catch (e) {
+    return {
+      props: {
+        AllRepliesJSON: [],
+      },
+    };
+  }
 }
 
 export default AnswerDetailPage;

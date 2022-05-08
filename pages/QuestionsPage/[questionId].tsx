@@ -359,12 +359,12 @@ export async function getServerSideProps(ctx: any) {
     const question = await fetch(
       `http://localhost:3000/api/question/${ctx.query.questionId}`
     );
-    const questionData = await question.json();
+    const questionData = question ? await question.json() : null;
 
     const answers = await fetch(
       `http://localhost:3000/api/answer/question/${ctx.query.questionId}`
     );
-    const answerData = await answers.json();
+    const answerData = answers ? await answers.json() : null;
 
     const user = await fetch(
       `http://localhost:3000/api/user/${session?.user?.email}`

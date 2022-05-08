@@ -12,10 +12,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
     if (status === "unauthenticated") {
       router.push("/");
     }
-    // @ts-ignore
-  }, [data.user?.email, router, status]);
-
-  if (status === "unauthenticated") return null;
+  }, [data?.user?.email, router, status]);
 
   return <>{children}</>;
 };

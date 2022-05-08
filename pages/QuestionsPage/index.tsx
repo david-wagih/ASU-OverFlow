@@ -135,7 +135,7 @@ const QuestionsPage = (props: any) => {
             }}
             variant="contained"
             onClick={() => setOpenPopUp(true)}
-            disabled={props.userData.isRestricted ? true : false}
+            disabled={props?.userData?.isRestricted ? true : false}
           >
             Ask Question
           </Button>
@@ -145,7 +145,9 @@ const QuestionsPage = (props: any) => {
               marginLeft: "20px",
               borderRadius: "10px",
               display:
-                props.userData.hasPrivilege === false ? "inline-block" : "none",
+                props?.userData?.hasPrivilege === false
+                  ? "inline-block"
+                  : "none",
             }}
             variant="contained"
             color="warning"
@@ -214,21 +216,30 @@ const QuestionsPage = (props: any) => {
 };
 
 export async function getServerSideProps(ctx: any) {
-  const session = await getSession(ctx);
-  const data1 = await fetch("http://localhost:3000/api/question/");
-  const questions = await data1.json();
+  try {
+    const session = await getSession(ctx);
+    const data1 = await fetch("http://localhost:3000/api/question/");
+    const questions = await data1.json();
 
-  const user = await fetch(
-    `http://localhost:3000/api/user/${session?.user?.email}`
-  );
-  const userData = await user.json();
+    const user = await fetch(
+      `http://localhost:3000/api/user/${session?.user?.email}`
+    );
+    const userData = user ? await user?.json() : null;
 
-  return {
-    props: {
-      questions,
-      userData,
-    },
-  };
+    return {
+      props: {
+        questions,
+        userData,
+      },
+    };
+  } catch (e) {
+    return {
+      props: {
+        questions: [],
+        userData: null,
+      },
+    };
+  }
 }
 
 export default QuestionsPage;

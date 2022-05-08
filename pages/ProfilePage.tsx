@@ -26,10 +26,8 @@ const ProfilePage = (props: any) => {
       <div className="d-flex flex-column align-items-center justify-content-space-between">
         <Row>
           <img
-            // @ts-ignore
-            src={data.user.image}
-            // @ts-ignore
-            alt={data.user.name}
+            src={String(data?.user?.image)}
+            alt={String(data?.user?.name)}
             width={200}
             height={200}
           />
@@ -41,8 +39,7 @@ const ProfilePage = (props: any) => {
             style={{ fontSize: "1.5rem", fontWeight: "bold" }}
           >
             {status === "authenticated"
-              ? //@ts-ignore
-                data.user.name
+              ? data?.user?.name
               : "You are not logged in"}
           </p>
         </Row>
@@ -51,8 +48,7 @@ const ProfilePage = (props: any) => {
         <Row>
           <p className="text-center" style={{ fontSize: "1.1rem" }}>
             {status === "authenticated"
-              ? //@ts-ignore
-                data.user.email
+              ? data?.user?.email
               : "You are not logged in"}
           </p>
         </Row>

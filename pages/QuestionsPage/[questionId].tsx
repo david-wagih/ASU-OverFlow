@@ -354,29 +354,39 @@ const Question = (props: any) => {
 };
 
 export async function getServerSideProps(ctx: any) {
-  const session = await getSession(ctx);
-  const question = await fetch(
-    `http://localhost:3000/api/question/${ctx.query.questionId}`
-  );
-  const questionData = await question.json();
+  try {
+    const session = await getSession(ctx);
+    const question = await fetch(
+      `http://localhost:3000/api/question/${ctx.query.questionId}`
+    );
+    const questionData = await question.json();
 
-  const answers = await fetch(
-    `http://localhost:3000/api/answer/question/${ctx.query.questionId}`
-  );
-  const answerData = await answers.json();
+    const answers = await fetch(
+      `http://localhost:3000/api/answer/question/${ctx.query.questionId}`
+    );
+    const answerData = await answers.json();
 
-  const user = await fetch(
-    `http://localhost:3000/api/user/${session?.user?.email}`
-  );
-  const userData = await user.json();
+    const user = await fetch(
+      `http://localhost:3000/api/user/${session?.user?.email}`
+    );
+    const userData = user ? await user?.json() : null;
 
-  return {
-    props: {
-      questionData,
-      answerData,
-      userData,
-    },
-  };
+    return {
+      props: {
+        questionData,
+        answerData,
+        userData,
+      },
+    };
+  } catch (e) {
+    return {
+      props: {
+        questionData: null,
+        answerData: null,
+        userData: null,
+      },
+    };
+  }
 }
 
 export default Question;

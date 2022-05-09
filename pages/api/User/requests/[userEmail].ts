@@ -15,7 +15,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     });
     res.status(200).json(request);
   } catch (e) {
-    res.status(200).json({
+    res.status(404).json({
       message: "No request found",
     });
   }

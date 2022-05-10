@@ -6,7 +6,6 @@ import prisma from "../../../lib/prisma";
 export default NextAuth({
   adapter: PrismaAdapter(prisma),
   providers: [
-    // let's add some providers to use
     GithubProvider({
       clientId: process.env.GITHUB_ID,
       clientSecret: process.env.GITHUB_SECRET,

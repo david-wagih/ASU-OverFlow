@@ -10,7 +10,7 @@ CREATE TYPE "Status" AS ENUM ('pending', 'accepted', 'rejected');
 -- CreateTable
 CREATE TABLE "Account" (
     "id" TEXT NOT NULL,
-    "userId" TEXT NOT NULL,
+    "userId" INTEGER NOT NULL,
     "type" TEXT NOT NULL,
     "provider" TEXT NOT NULL,
     "providerAccountId" TEXT NOT NULL,
@@ -29,7 +29,7 @@ CREATE TABLE "Account" (
 CREATE TABLE "Session" (
     "id" TEXT NOT NULL,
     "sessionToken" TEXT NOT NULL,
-    "userId" TEXT NOT NULL,
+    "userId" INTEGER NOT NULL,
     "expires" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "Session_pkey" PRIMARY KEY ("id")
@@ -37,13 +37,13 @@ CREATE TABLE "Session" (
 
 -- CreateTable
 CREATE TABLE "User" (
-    "id" TEXT NOT NULL,
+    "id" SERIAL NOT NULL,
     "name" TEXT,
     "email" TEXT,
     "emailVerified" TIMESTAMP(3),
     "image" TEXT,
-    "hasPrivilege" BOOLEAN,
-    "isRestricted" BOOLEAN,
+    "isRestricted" BOOLEAN NOT NULL DEFAULT false,
+    "hasPrivilege" BOOLEAN NOT NULL DEFAULT false,
     "role" "Role" NOT NULL DEFAULT E'USER',
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
@@ -58,49 +58,65 @@ CREATE TABLE "VerificationToken" (
 
 -- CreateTable
 CREATE TABLE "Question" (
-    "id" TEXT NOT NULL,
+    "id" SERIAL NOT NULL,
     "category" "Category" NOT NULL,
     "content" TEXT NOT NULL,
-    "userId" TEXT NOT NULL,
+    "userEmail" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "updatedAt" TIMESTAMP(3),
 
     CONSTRAINT "Question_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "Answer" (
-    "id" TEXT NOT NULL,
-    "questionId" TEXT NOT NULL,
-    "userId" TEXT NOT NULL,
+    "id" SERIAL NOT NULL,
+    "questionId" INTEGER NOT NULL,
+    "content" TEXT NOT NULL,
+    "userEmail" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
-    "UpVotes" INTEGER NOT NULL,
-    "DownVotes" INTEGER NOT NULL,
+    "updatedAt" TIMESTAMP(3),
+    "UpVotes" INTEGER NOT NULL DEFAULT 0,
+    "DownVotes" INTEGER NOT NULL DEFAULT 0,
+    "isSolution" BOOLEAN NOT NULL DEFAULT false,
 
     CONSTRAINT "Answer_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "Reply" (
-    "id" TEXT NOT NULL,
+    "id" SERIAL NOT NULL,
+    "answerId" INTEGER NOT NULL,
     "content" TEXT NOT NULL,
-    "userId" TEXT NOT NULL,
+    "userEmail" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "updatedAt" TIMESTAMP(3),
 
     CONSTRAINT "Reply_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "Request" (
-    "id" TEXT NOT NULL,
-    "userId" TEXT NOT NULL,
+    "id" SERIAL NOT NULL,
+    "userEmail" TEXT NOT NULL,
     "status" "Status" NOT NULL DEFAULT E'pending',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "updatedAt" TIMESTAMP(3),
 
     CONSTRAINT "Request_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "User_Question_Answer" (
+    "userEmail" TEXT NOT NULL,
+    "questionId" INTEGER NOT NULL,
+    "answerId" INTEGER NOT NULL,
+    "upVoted" BOOLEAN DEFAULT false,
+    "downVoted" BOOLEAN DEFAULT false,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3),
+
+    CONSTRAINT "User_Question_Answer_pkey" PRIMARY KEY ("userEmail","questionId","answerId")
 );
 
 -- CreateIndex
@@ -119,7 +135,7 @@ CREATE UNIQUE INDEX "VerificationToken_token_key" ON "VerificationToken"("token"
 CREATE UNIQUE INDEX "VerificationToken_identifier_token_key" ON "VerificationToken"("identifier", "token");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Request_userId_key" ON "Request"("userId");
+CREATE UNIQUE INDEX "Request_userEmail_key" ON "Request"("userEmail");
 
 -- AddForeignKey
 ALTER TABLE "Account" ADD CONSTRAINT "Account_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -128,19 +144,28 @@ ALTER TABLE "Account" ADD CONSTRAINT "Account_userId_fkey" FOREIGN KEY ("userId"
 ALTER TABLE "Session" ADD CONSTRAINT "Session_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Question" ADD CONSTRAINT "Question_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Question" ADD CONSTRAINT "Question_userEmail_fkey" FOREIGN KEY ("userEmail") REFERENCES "User"("email") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Answer" ADD CONSTRAINT "Answer_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Answer" ADD CONSTRAINT "Answer_userEmail_fkey" FOREIGN KEY ("userEmail") REFERENCES "User"("email") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Answer" ADD CONSTRAINT "Answer_questionId_fkey" FOREIGN KEY ("questionId") REFERENCES "Question"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Reply" ADD CONSTRAINT "Reply_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Reply" ADD CONSTRAINT "Reply_userEmail_fkey" FOREIGN KEY ("userEmail") REFERENCES "User"("email") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Reply" ADD CONSTRAINT "Reply_id_fkey" FOREIGN KEY ("id") REFERENCES "Answer"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Reply" ADD CONSTRAINT "Reply_answerId_fkey" FOREIGN KEY ("answerId") REFERENCES "Answer"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Request" ADD CONSTRAINT "Request_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Request" ADD CONSTRAINT "Request_userEmail_fkey" FOREIGN KEY ("userEmail") REFERENCES "User"("email") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "User_Question_Answer" ADD CONSTRAINT "User_Question_Answer_userEmail_fkey" FOREIGN KEY ("userEmail") REFERENCES "User"("email") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "User_Question_Answer" ADD CONSTRAINT "User_Question_Answer_questionId_fkey" FOREIGN KEY ("questionId") REFERENCES "Question"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "User_Question_Answer" ADD CONSTRAINT "User_Question_Answer_answerId_fkey" FOREIGN KEY ("answerId") REFERENCES "Answer"("id") ON DELETE CASCADE ON UPDATE CASCADE;

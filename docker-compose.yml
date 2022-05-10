@@ -2,34 +2,46 @@ version: "3.8"
 services:
   postgres:
     image: postgres:latest
-    restart: always
+    container_name: postgres
+    hostname: postgres
+    ports:
+      - 5432:5432
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: Davidwagih123
-      POSTGES_DB: mydb
-    ports:
-      - "5432:5432"
-    networks:
-      - shared-network
+      POSTGRES_DB: mydb
     volumes:
-      - postgres:/var/lib/postgresql/data
-  app:
-    container_name: swe-project-container
+      - postgres-data:/var/lib/postgresql/data
     restart: unless-stopped
-    image: swe-project-prod:1.0.0
-    build:
-      context: .
-      target: production
-      dockerfile: Dockerfile
-    ports:
-      - "3000:3000"
-    networks:
-      - shared-network
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
     depends_on:
       - postgres
+    ports:
+      - "5555:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: pgadmin4@pgadmin.org
+      PGADMIN_DEFAULT_PASSWORD: admin
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+    restart: unless-stopped
 
+  prisma-postgres-api:
+    stdin_open: true
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: prisma-postgres-api
+    depends_on:
+      - postgres
+    ports:
+      - "3000:3000"
+    restart: always
 volumes:
-  postgres:
+  postgres-data:
+  pgadmin-data:
 
 networks:
   shared-network:

@@ -214,30 +214,39 @@ const adminPage = (props: any) => {
 };
 
 export async function getServerSideProps(ctx: any) {
-  const allRequests = await fetch(
-    "https://asu-over-flow.vercel.app/api/user/requests",
-    {
+  try {
+    const allRequests = await fetch(
+      "https://asu-over-flow.vercel.app/api/user/requests",
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const allRequestsJson = allRequests ? await allRequests.json() : null;
+
+    const allUsers = await fetch("https://asu-over-flow.vercel.app/api/user", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
       },
-    }
-  );
-  const allRequestsJson = await allRequests.json();
-
-  const allUsers = await fetch("https://asu-over-flow.vercel.app/api/user", {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-  const allUsersJson = await allUsers.json();
-  return {
-    props: {
-      allRequestsJson,
-      allUsersJson,
-    },
-  };
+    });
+    const allUsersJson = allUsers ? await allUsers.json() : null;
+    return {
+      props: {
+        allRequestsJson,
+        allUsersJson,
+      },
+    };
+  } catch (e) {
+    return {
+      props: {
+        allRequestsJson: [],
+        allUsersJson: [],
+      },
+    };
+  }
 }
 
 export default adminPage;

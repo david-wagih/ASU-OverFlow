@@ -78,7 +78,7 @@ export async function getServerSideProps(ctx: any) {
   try {
     const { id } = ctx.query;
     const AllReplies = await fetch(
-      `http://localhost:3000/api/answer/${id}/reply`,
+      `https://asu-over-flow.vercel.app/api/answer/${id}/reply`,
       {
         method: "POST",
         headers: {

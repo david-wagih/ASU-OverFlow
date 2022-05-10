@@ -37,15 +37,18 @@ const QuestionsPage = (props: any) => {
   };
 
   const handleRequestPrivilege = async () => {
-    const newRequest = await fetch("http://localhost:3000/api/user/requests", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        userEmail: data?.user?.email,
-      }),
-    });
+    const newRequest = await fetch(
+      "https://asu-over-flow.vercel.app/api/user/requests",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userEmail: data?.user?.email,
+        }),
+      }
+    );
     const newRequestData = await newRequest.json();
     console.log(newRequestData);
   };
@@ -218,11 +221,11 @@ const QuestionsPage = (props: any) => {
 export async function getServerSideProps(ctx: any) {
   try {
     const session = await getSession(ctx);
-    const data1 = await fetch("http://localhost:3000/api/question/");
+    const data1 = await fetch("https://asu-over-flow.vercel.app/api/question/");
     const questions = await data1.json();
 
     const user = await fetch(
-      `http://localhost:3000/api/user/${session?.user?.email}`
+      `https://asu-over-flow.vercel.app/api/user/${session?.user?.email}`
     );
     const userData = user ? await user?.json() : null;
 

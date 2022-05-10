@@ -98,7 +98,7 @@ const ProfilePage = (props: any) => {
 export async function getServerSideProps(ctx: any) {
   const session = await getSession(ctx);
   const myQuestions = await fetch(
-    `http://localhost:3000/api/question/user/${session?.user?.email}`
+    `https://asu-over-flow.vercel.app/api/question/user/${session?.user?.email}`
   );
   const questions = await myQuestions.json();
 

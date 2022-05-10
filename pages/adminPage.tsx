@@ -53,18 +53,21 @@ const adminPage = (props: any) => {
                 variant="contained"
                 color="success"
                 onClick={async () => {
-                  await fetch("http://localhost:3000/api/user/requests", {
-                    method: "PUT",
-                    headers: {
-                      "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                      id: request.id,
-                      status: "accepted",
-                    }),
-                  });
                   await fetch(
-                    `http://localhost:3000/api/user/${request.userEmail}`,
+                    "https://asu-over-flow.vercel.app/api/user/requests",
+                    {
+                      method: "PUT",
+                      headers: {
+                        "Content-Type": "application/json",
+                      },
+                      body: JSON.stringify({
+                        id: request.id,
+                        status: "accepted",
+                      }),
+                    }
+                  );
+                  await fetch(
+                    `https://asu-over-flow.vercel.app/api/user/${request.userEmail}`,
                     {
                       method: "PUT",
                       headers: {
@@ -89,16 +92,19 @@ const adminPage = (props: any) => {
                 variant="contained"
                 color="error"
                 onClick={async () => {
-                  await fetch("http://localhost:3000/api/user/requests", {
-                    method: "PUT",
-                    headers: {
-                      "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                      id: request.id,
-                      status: "rejected",
-                    }),
-                  });
+                  await fetch(
+                    "https://asu-over-flow.vercel.app/api/user/requests",
+                    {
+                      method: "PUT",
+                      headers: {
+                        "Content-Type": "application/json",
+                      },
+                      body: JSON.stringify({
+                        id: request.id,
+                        status: "rejected",
+                      }),
+                    }
+                  );
                   window.location.reload();
                 }}
               >
@@ -160,7 +166,7 @@ const adminPage = (props: any) => {
                 variant="contained"
                 color="success"
                 onClick={async () => {
-                  await fetch("http://localhost:3000/api/admin", {
+                  await fetch("https://asu-over-flow.vercel.app/api/admin", {
                     method: "PUT",
                     headers: {
                       "Content-Type": "application/json",
@@ -184,7 +190,7 @@ const adminPage = (props: any) => {
                 variant="contained"
                 color="error"
                 onClick={async () => {
-                  await fetch("http://localhost:3000/api/admin", {
+                  await fetch("https://asu-over-flow.vercel.app/api/admin", {
                     method: "PUT",
                     headers: {
                       "Content-Type": "application/json",
@@ -208,15 +214,18 @@ const adminPage = (props: any) => {
 };
 
 export async function getServerSideProps(ctx: any) {
-  const allRequests = await fetch("http://localhost:3000/api/user/requests", {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  const allRequests = await fetch(
+    "https://asu-over-flow.vercel.app/api/user/requests",
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
   const allRequestsJson = await allRequests.json();
 
-  const allUsers = await fetch("http://localhost:3000/api/user", {
+  const allUsers = await fetch("https://asu-over-flow.vercel.app/api/user", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

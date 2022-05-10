@@ -37,7 +37,7 @@ const Question = (props: any) => {
 
   const handleDeleteQuestion = async () => {
     const deleteQuestion = await fetch(
-      `http://localhost:3000/api/question/${questionId}`,
+      `https://asu-over-flow.vercel.app/api/question/${questionId}`,
       {
         method: "DELETE",
         headers: {
@@ -60,7 +60,7 @@ const Question = (props: any) => {
     const { answerId } = props;
     try {
       const deleteAnswer = await fetch(
-        `http://localhost:3000/api/answer/${answerId}`,
+        `https://asu-over-flow.vercel.app/api/answer/${answerId}`,
         {
           method: "DELETE",
           headers: {
@@ -263,7 +263,7 @@ const Question = (props: any) => {
                 <Button
                   onClick={async () => {
                     await fetch(
-                      `http://localhost:3000/api/answer/${answer.id}/solution`,
+                      `https://asu-over-flow.vercel.app/api/answer/${answer.id}/solution`,
                       {
                         method: "PUT",
                         headers: {
@@ -294,7 +294,7 @@ const Question = (props: any) => {
                 <Button
                   onClick={async () => {
                     await fetch(
-                      `http://localhost:3000/api/answer/${answer.id}/solution`,
+                      `https://asu-over-flow.vercel.app/api/answer/${answer.id}/solution`,
                       {
                         method: "PUT",
                         headers: {
@@ -357,17 +357,17 @@ export async function getServerSideProps(ctx: any) {
   try {
     const session = await getSession(ctx);
     const question = await fetch(
-      `http://localhost:3000/api/question/${ctx.query.questionId}`
+      `https://asu-over-flow.vercel.app/api/question/${ctx.query.questionId}`
     );
     const questionData = question ? await question.json() : null;
 
     const answers = await fetch(
-      `http://localhost:3000/api/answer/question/${ctx.query.questionId}`
+      `https://asu-over-flow.vercel.app/api/answer/question/${ctx.query.questionId}`
     );
     const answerData = answers ? await answers.json() : null;
 
     const user = await fetch(
-      `http://localhost:3000/api/user/${session?.user?.email}`
+      `https://asu-over-flow.vercel.app/api/user/${session?.user?.email}`
     );
     const userData = user ? await user?.json() : null;
 

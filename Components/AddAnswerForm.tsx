@@ -24,17 +24,20 @@ const AddAnswerForm = (props: any) => {
   const handleSubmit = async (event: any) => {
     try {
       event.preventDefault();
-      const newAnswer = await fetch("http://localhost:3000/api/answer/create", {
-        method: "POST",
-        body: JSON.stringify({
-          content: value,
-          questionId: Number(questionId),
-          userEmail: data?.user?.email,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const newAnswer = await fetch(
+        "https://asu-over-flow.vercel.app/api/answer/create",
+        {
+          method: "POST",
+          body: JSON.stringify({
+            content: value,
+            questionId: Number(questionId),
+            userEmail: data?.user?.email,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       const newAnswerJSON = await newAnswer.json();
       console.log(newAnswerJSON);
       setOpenPopUp(false);

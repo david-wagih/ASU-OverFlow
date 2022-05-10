@@ -19,7 +19,7 @@ const EditQuestionForm = (props: any) => {
       try {
         event.preventDefault();
         const updatedQuestion = await fetch(
-          `http://localhost:3000/api/question/${questionId}`,
+          `https://asu-over-flow.vercel.app/api/question/${questionId}`,
           {
             method: "PUT",
             body: JSON.stringify({

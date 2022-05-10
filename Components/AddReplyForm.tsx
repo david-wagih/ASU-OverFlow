@@ -22,7 +22,7 @@ const AddReplyForm = (props: any) => {
     try {
       event.preventDefault();
       const newReply = await fetch(
-        `http://localhost:3000/api/answer/${answerId}/reply/create`,
+        `https://asu-over-flow.vercel.app/api/answer/${answerId}/reply/create`,
         {
           method: "POST",
           headers: {

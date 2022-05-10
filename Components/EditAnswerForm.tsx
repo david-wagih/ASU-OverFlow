@@ -18,7 +18,7 @@ const EditAnswerForm = (props: any) => {
     try {
       event.preventDefault();
       const updatedAnswer = await fetch(
-        `http://localhost:3000/api/answer/${answerId}/update`,
+        `https://asu-over-flow.vercel.app/api/answer/${answerId}/update`,
         {
           method: "PUT",
           body: JSON.stringify({

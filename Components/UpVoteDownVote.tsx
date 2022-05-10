@@ -11,7 +11,7 @@ const UpVoteDownVote = (props: any) => {
   const handleAddingVote = async () => {
     // we need first to check if user has already voted to the answer or not
     const hasVoted = await fetch(
-      `http://localhost:3000/api/answer/${answerId}/votes/check`,
+      `https://asu-over-flow.vercel.app/api/answer/${answerId}/votes/check`,
       {
         method: "POST",
         headers: {
@@ -31,7 +31,7 @@ const UpVoteDownVote = (props: any) => {
     } else if (hasVotedData.voted === true && hasVotedData.downVoted === true) {
       // here we should handle the case that user pressed up vote after pressing down vote before
       const updateUserVote = await fetch(
-        `http://localhost:3000/api/answer/${answerId}/votes`,
+        `https://asu-over-flow.vercel.app/api/answer/${answerId}/votes`,
         {
           method: "PUT",
           headers: {
@@ -49,7 +49,7 @@ const UpVoteDownVote = (props: any) => {
       const updateUserVoteData = await updateUserVote.json();
       console.log(updateUserVoteData);
       const updateVote = await fetch(
-        `http://localhost:3000/api/answer/${answerId}`,
+        `https://asu-over-flow.vercel.app/api/answer/${answerId}`,
         {
           method: "PUT",
           headers: {
@@ -70,7 +70,7 @@ const UpVoteDownVote = (props: any) => {
       // voted variable is false i mean
 
       const newVote = await fetch(
-        `http://localhost:3000/api/answer/${answerId}/votes`,
+        `https://asu-over-flow.vercel.app/api/answer/${answerId}/votes`,
         {
           method: "POST",
           headers: {
@@ -90,7 +90,7 @@ const UpVoteDownVote = (props: any) => {
       // then add this vote to the UpVotes counter of this answer then refresh the page for the change to take place
 
       const updateVote = await fetch(
-        `http://localhost:3000/api/answer/${answerId}`,
+        `https://asu-over-flow.vercel.app/api/answer/${answerId}`,
         {
           method: "PUT",
           headers: {
@@ -111,7 +111,7 @@ const UpVoteDownVote = (props: any) => {
   const handleRemovingVote = async () => {
     try {
       const hasVoted = await fetch(
-        `http://localhost:3000/api/answer/${answerId}/votes/check`,
+        `https://asu-over-flow.vercel.app/api/answer/${answerId}/votes/check`,
         {
           method: "POST",
           headers: {
@@ -131,7 +131,7 @@ const UpVoteDownVote = (props: any) => {
       } else if (hasVotedData.voted === true && hasVotedData.upVoted === true) {
         // here we should handle the case that user pressed up vote after pressing down vote before
         const updateUserVote = await fetch(
-          `http://localhost:3000/api/answer/${answerId}/votes`,
+          `https://asu-over-flow.vercel.app/api/answer/${answerId}/votes`,
           {
             method: "PUT",
             headers: {
@@ -149,7 +149,7 @@ const UpVoteDownVote = (props: any) => {
         const updateUserVoteData = await updateUserVote.json();
         console.log(updateUserVoteData);
         const updateVote = await fetch(
-          `http://localhost:3000/api/answer/${answerId}`,
+          `https://asu-over-flow.vercel.app/api/answer/${answerId}`,
           {
             method: "PUT",
             headers: {
@@ -170,7 +170,7 @@ const UpVoteDownVote = (props: any) => {
         // didn't vote before
 
         const newVote = await fetch(
-          `http://localhost:3000/api/answer/${answerId}/votes`,
+          `https://asu-over-flow.vercel.app/api/answer/${answerId}/votes`,
           {
             method: "POST",
             headers: {
@@ -190,7 +190,7 @@ const UpVoteDownVote = (props: any) => {
         // then add this vote to the UpVotes counter of this answer then refresh the page for the change to take place
 
         const updateVote = await fetch(
-          `http://localhost:3000/api/answer/${answerId}`,
+          `https://asu-over-flow.vercel.app/api/answer/${answerId}`,
           {
             method: "PUT",
             headers: {

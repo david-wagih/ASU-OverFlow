@@ -25,7 +25,7 @@ const AddQuestionForm = (props: any) => {
     try {
       event.preventDefault();
       const newQuestion = await fetch(
-        "http://localhost:3000/api/question/create",
+        "https://asu-over-flow.vercel.app/api/question/create",
         {
           method: "POST",
           body: JSON.stringify({

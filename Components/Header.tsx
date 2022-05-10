@@ -11,13 +11,13 @@ const Header = () => {
 
   const handleSignIn = async () => {
     await signIn("github", {
-      callbackUrl: "http://localhost:3000/",
+      callbackUrl: "https://asu-over-flow.vercel.app/",
     });
   };
 
   const handleLogout = async () => {
     await signOut({
-      callbackUrl: "http://localhost:3000/",
+      callbackUrl: "https://asu-over-flow.vercel.app/",
     });
   };
 

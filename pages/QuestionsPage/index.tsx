@@ -37,20 +37,24 @@ const QuestionsPage = (props: any) => {
   };
 
   const handleRequestPrivilege = async () => {
-    const newRequest = await fetch(
-      "https://asu-over-flow.vercel.app/api/user/requests",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          userEmail: data?.user?.email,
-        }),
-      }
-    );
-    const newRequestData = await newRequest.json();
-    console.log(newRequestData);
+    try {
+      const newRequest = await fetch(
+        "https://asu-over-flow.vercel.app/api/user/requests",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            userEmail: data?.user?.email,
+          }),
+        }
+      );
+      const newRequestData = newRequest ? await newRequest.json() : null;
+      console.log(newRequestData);
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   // this is for the Modal state
@@ -221,8 +225,10 @@ const QuestionsPage = (props: any) => {
 export async function getServerSideProps(ctx: any) {
   try {
     const session = await getSession(ctx);
+
     const data1 = await fetch("https://asu-over-flow.vercel.app/api/question/");
-    const questions = await data1.json();
+
+    const questions = data1 ? await data1.json() : null;
 
     const user = await fetch(
       `https://asu-over-flow.vercel.app/api/user/${session?.user?.email}`

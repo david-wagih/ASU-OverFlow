@@ -29,7 +29,7 @@ const adminPage = (props: any) => {
           borderRadius: "0px",
         }}
       >
-        {props.allRequestsJson.map((request: any) => {
+        {props?.allRequestsJson?.map((request: any) => {
           return (
             <ListItem
               style={{
@@ -139,7 +139,7 @@ const adminPage = (props: any) => {
           borderRadius: "0px",
         }}
       >
-        {props.allUsersJson.map((user: any) => {
+        {props?.allUsersJson?.map((user: any) => {
           return (
             <ListItem
               style={{

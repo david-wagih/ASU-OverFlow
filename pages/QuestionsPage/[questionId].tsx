@@ -114,10 +114,24 @@ const Question = (props: any) => {
             marginBottom: "20px",
           }}
         >
-          <Button onClick={() => setOpenQuestionPopUp(true)}>
+          <Button
+            disabled={
+              props?.questionData?.userEmail !== data?.user?.email
+                ? true
+                : false
+            }
+            onClick={() => setOpenQuestionPopUp(true)}
+          >
             <EditIcon color="success" />
           </Button>
-          <Button onClick={handleDeleteQuestion}>
+          <Button
+            disabled={
+              props?.questionData?.userEmail !== data?.user?.email
+                ? true
+                : false
+            }
+            onClick={handleDeleteQuestion}
+          >
             <DeleteForeverIcon color="error" />
           </Button>
         </div>

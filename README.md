@@ -41,3 +41,5 @@ npm install
 ## to start the server and running the project
 
 npm run dev
+
+### going to change this documentation soon

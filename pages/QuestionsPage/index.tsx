@@ -46,7 +46,7 @@ const QuestionsPage = (props: any) => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            userEmail: data?.user?.email,
+            userEmail: props?.userData?.userEmail,
           }),
         }
       );

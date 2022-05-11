@@ -5,13 +5,12 @@ import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../../../lib/prisma";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const { id, content, questionId, userEmail } = req.body;
+  const { id, content, userEmail } = req.body;
   try {
     const answer = await prisma.answer.update({
       where: { id: Number(id) },
       data: {
         content: content,
-        questionId: questionId,
         userEmail: userEmail,
       },
     });

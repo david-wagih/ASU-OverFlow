@@ -23,7 +23,6 @@ const EditAnswerForm = (props: any) => {
           method: "PUT",
           body: JSON.stringify({
             id: answerId,
-            questionId: questionId,
             content: value,
             userEmail: userEmail,
           }),

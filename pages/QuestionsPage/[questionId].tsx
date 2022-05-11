@@ -221,6 +221,7 @@ const Question = (props: any) => {
                 title="Add a Reply"
                 openPopUp={openReplyPopUp}
                 setOpenPopUp={setOpenReplyPopUp}
+                questionId={questionId}
               >
                 <AddReplyForm
                   answerId={answer.id}

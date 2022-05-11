@@ -220,10 +220,22 @@ const Question = (props: any) => {
                   marginLeft: "80px",
                 }}
               >
-                <Button onClick={handleEditAnswer}>
+                <Button
+                  disabled={
+                    props?.questionData?.userEmail !== data?.user?.email
+                      ? true
+                      : false
+                  }
+                  onClick={handleEditAnswer}
+                >
                   <EditIcon color="success" />
                 </Button>
                 <Button
+                  disabled={
+                    props?.questionData?.userEmail !== data?.user?.email
+                      ? true
+                      : false
+                  }
                   onClick={() => handleDeleteAnswer({ answerId: answer.id })}
                 >
                   <DeleteForeverIcon color="error" />

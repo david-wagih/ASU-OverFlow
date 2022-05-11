@@ -46,7 +46,7 @@ const QuestionsPage = (props: any) => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            userEmail: props?.userData?.userEmail,
+            userEmail: data?.user?.email,
           }),
         }
       );
@@ -143,8 +143,8 @@ const QuestionsPage = (props: any) => {
               marginLeft: "20px",
               borderRadius: "10px",
               display:
-                props?.userData?.hasPrivilege === false ||
-                props?.myRequestData === undefined
+                props?.userData?.hasPrivilege === false &&
+                props?.myRequestData === null
                   ? "inline-block"
                   : "none",
             }}

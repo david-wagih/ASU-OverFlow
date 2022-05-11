@@ -143,7 +143,7 @@ const QuestionsPage = (props: any) => {
               marginLeft: "20px",
               borderRadius: "10px",
               display:
-                props?.userData?.hasPrivilege === false &&
+                props?.userData?.hasPrivilege === false ||
                 props?.myRequestData === undefined
                   ? "inline-block"
                   : "none",

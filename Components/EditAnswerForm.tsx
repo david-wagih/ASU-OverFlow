@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { Button, FormGroup, Input } from "@mui/material";
 
 const EditAnswerForm = (props: any) => {
-  const { answerId, openPopUp, setOpenPopUp } = props;
+  const { answerId, openPopUp, setOpenPopUp, questionId, userEmail } = props;
   const { data } = useSession();
   const [value, setValue] = useState();
   const router = useRouter();
@@ -23,7 +23,9 @@ const EditAnswerForm = (props: any) => {
           method: "PUT",
           body: JSON.stringify({
             id: answerId,
+            questionId: questionId,
             content: value,
+            userEmail: userEmail,
           }),
           headers: {
             "Content-Type": "application/json",

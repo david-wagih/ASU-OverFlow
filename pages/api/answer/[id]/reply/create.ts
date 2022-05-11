@@ -5,9 +5,10 @@ import prisma from "../../../../../lib/prisma";
 // http://localhost:3000/api/answer/[id]/reply/create
 
 const postReply = async (req: NextApiRequest, res: NextApiResponse) => {
-  const { answerId, userEmail, content } = req.body;
+  const { answerId, userEmail, content, questionId } = req.body;
   const reply = await prisma.reply.create({
     data: {
+      questionId: questionId,
       answerId: answerId,
       content: content,
       userEmail: userEmail,

@@ -213,6 +213,8 @@ const Question = (props: any) => {
                   answerId={answer.id}
                   openPopUp={openAnswerPopUp}
                   setOpenPopUp={setOpenAnswerPopUp}
+                  questionId={questionId}
+                  userEmail={data?.user?.email}
                 />
               </PopUp>
               <PopUp
@@ -224,6 +226,8 @@ const Question = (props: any) => {
                   answerId={answer.id}
                   openPopUp={openReplyPopUp}
                   setOpenPopUp={setOpenReplyPopUp}
+                  questionId={questionId}
+                  userEmail={data?.user?.email}
                 />
               </PopUp>
               <div

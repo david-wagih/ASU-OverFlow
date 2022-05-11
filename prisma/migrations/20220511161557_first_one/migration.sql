@@ -87,6 +87,7 @@ CREATE TABLE "Answer" (
 CREATE TABLE "Reply" (
     "id" SERIAL NOT NULL,
     "answerId" INTEGER NOT NULL,
+    "questionId" INTEGER NOT NULL,
     "content" TEXT NOT NULL,
     "userEmail" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -154,6 +155,9 @@ ALTER TABLE "Answer" ADD CONSTRAINT "Answer_questionId_fkey" FOREIGN KEY ("quest
 
 -- AddForeignKey
 ALTER TABLE "Reply" ADD CONSTRAINT "Reply_userEmail_fkey" FOREIGN KEY ("userEmail") REFERENCES "User"("email") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Reply" ADD CONSTRAINT "Reply_questionId_fkey" FOREIGN KEY ("questionId") REFERENCES "Question"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Reply" ADD CONSTRAINT "Reply_answerId_fkey" FOREIGN KEY ("answerId") REFERENCES "Answer"("id") ON DELETE CASCADE ON UPDATE CASCADE;

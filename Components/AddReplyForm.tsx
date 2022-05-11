@@ -8,10 +8,8 @@ import { Router } from "express";
 import { useRouter } from "next/router";
 
 const AddReplyForm = (props: any) => {
-  const { answerId, openPopUp, setOpenPopUp } = props;
-  const { data } = useSession();
+  const { answerId, openPopUp, setOpenPopUp, questionId, userEmail } = props;
   const [value, setValue] = useState();
-  const router = useRouter();
 
   const handleInputField = (e: any) => {
     setValue(e.target.value);
@@ -29,9 +27,10 @@ const AddReplyForm = (props: any) => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
+            questionId: questionId,
             answerId: answerId,
             content: value,
-            userEmail: data?.user?.email,
+            userEmail: userEmail,
           }),
         }
       );

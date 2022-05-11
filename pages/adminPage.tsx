@@ -226,12 +226,15 @@ export async function getServerSideProps(ctx: any) {
     );
     const allRequestsJson = allRequests ? await allRequests.json() : null;
 
-    const allUsers = await fetch("https://asu-over-flow.vercel.app/api/user", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const allUsers = await fetch(
+      "https://asu-over-flow.vercel.app/api/user/allUsers",
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
     const allUsersJson = allUsers ? await allUsers.json() : null;
     return {
       props: {

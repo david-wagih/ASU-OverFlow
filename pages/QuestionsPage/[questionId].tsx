@@ -236,9 +236,7 @@ const Question = (props: any) => {
               >
                 <Button
                   disabled={
-                    props?.questionData?.userEmail !== data?.user?.email
-                      ? true
-                      : false
+                    answer.userEmail !== data?.user?.email ? true : false
                   }
                   onClick={handleEditAnswer}
                 >
@@ -246,9 +244,7 @@ const Question = (props: any) => {
                 </Button>
                 <Button
                   disabled={
-                    props?.questionData?.userEmail !== data?.user?.email
-                      ? true
-                      : false
+                    answer.userEmail !== data?.user?.email ? true : false
                   }
                   onClick={() => handleDeleteAnswer({ answerId: answer.id })}
                 >
@@ -287,6 +283,11 @@ const Question = (props: any) => {
                   </Typography>
                 </Button>
                 <Button
+                  disabled={
+                    props?.questionData?.userEmail !== data?.user?.email
+                      ? true
+                      : false
+                  }
                   onClick={async () => {
                     await fetch(
                       `https://asu-over-flow.vercel.app/api/answer/${answer.id}/solution`,
@@ -318,6 +319,11 @@ const Question = (props: any) => {
                   </Typography>
                 </Button>
                 <Button
+                  disabled={
+                    props?.questionData?.userEmail !== data?.user?.email
+                      ? true
+                      : false
+                  }
                   onClick={async () => {
                     await fetch(
                       `https://asu-over-flow.vercel.app/api/answer/${answer.id}/solution`,

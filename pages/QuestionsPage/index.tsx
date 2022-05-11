@@ -143,7 +143,8 @@ const QuestionsPage = (props: any) => {
               marginLeft: "20px",
               borderRadius: "10px",
               display:
-                props?.userData?.hasPrivilege === false
+                props?.userData?.hasPrivilege === false &&
+                props?.myRequestData === undefined
                   ? "inline-block"
                   : "none",
             }}
@@ -226,10 +227,16 @@ export async function getServerSideProps(ctx: any) {
     );
     const userData = user ? await user?.json() : null;
 
+    const myRequest = await fetch(
+      `https://asu-over-flow.vercel.app/api/user/requests/${session?.user?.email}`
+    );
+    const myRequestData = myRequest ? await myRequest.json() : null;
+
     return {
       props: {
         questions,
         userData,
+        myRequestData,
       },
     };
   } catch (e) {
@@ -237,6 +244,7 @@ export async function getServerSideProps(ctx: any) {
       props: {
         questions: [],
         userData: null,
+        myRequestData: null,
       },
     };
   }

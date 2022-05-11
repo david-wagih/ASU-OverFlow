@@ -27,7 +27,6 @@ const AddReplyForm = (props: any) => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            questionId: questionId,
             answerId: answerId,
             content: value,
             userEmail: userEmail,

@@ -125,15 +125,6 @@ const QuestionsPage = (props: any) => {
               value={value}
               helperText="make the Search Keyword not more than 54 characters"
             ></TextField>
-            <Icon
-              style={{
-                marginLeft: "20px",
-                marginTop: "20px",
-                marginBottom: "5px",
-              }}
-            >
-              search
-            </Icon>
           </div>
           <Button
             style={{

@@ -8,7 +8,7 @@ import { Router } from "express";
 import { useRouter } from "next/router";
 
 const AddReplyForm = (props: any) => {
-  const { openPopUp, setOpenPopUp, answerId } = props;
+  const { answerId, openPopUp, setOpenPopUp } = props;
   const { data } = useSession();
   const [value, setValue] = useState();
   const router = useRouter();

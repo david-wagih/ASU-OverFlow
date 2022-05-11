@@ -34,7 +34,7 @@ const AddReplyForm = (props: any) => {
           }),
         }
       );
-      const newReplyJSON = await newReply.json();
+      const newReplyJSON = newReply ? await newReply.json() : null;
       console.log(newReplyJSON);
       setOpenPopUp(false);
     } catch (e) {

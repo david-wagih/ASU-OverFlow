@@ -18,6 +18,7 @@ const AddReplyForm = (props: any) => {
   // todo : need to implement here to create a reply in the database
   const handleSubmit = async (event: any) => {
     try {
+      console.log(answerId);
       event.preventDefault();
       const newReply = await fetch(
         `https://asu-over-flow.vercel.app/api/answer/${answerId}/reply/create`,

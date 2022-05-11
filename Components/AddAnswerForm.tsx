@@ -72,7 +72,7 @@ const AddAnswerForm = (props: any) => {
           value={value}
           onChange={handleInputField}
           variant="outlined"
-          helperText="Make the answer not more than 80 characters"
+          helperText="Make the answer not more than 80 words"
         ></TextField>
 
         <Button

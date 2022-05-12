@@ -33,7 +33,6 @@ const AnswerDetailPage = (props: any) => {
       const deleteAnswerJSON = await deleteAnswer.json();
       console.log(deleteAnswerJSON);
       window.location.reload();
-      router.push("/");
     } catch (e) {
       console.log(e);
     }

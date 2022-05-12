@@ -167,7 +167,6 @@ const Question = (props: any) => {
                 <InitialsAvatar name={answer.userEmail} />
               </ListItemAvatar>
               <ListItemText
-                onClick={() => router.push(`/AnswerPage/${answer.id}`)}
                 primary={answer.content}
                 secondary={answer.createdAt}
               ></ListItemText>
@@ -257,6 +256,15 @@ const Question = (props: any) => {
                   >
                     Not a Solution
                   </Typography>
+                </Button>
+                <Button
+                  style={{
+                    marginLeft: "20px",
+                  }}
+                  variant="contained"
+                  onClick={() => router.push(`/AnswerPage/${answer.id}`)}
+                >
+                  View Details
                 </Button>
               </div>
             </ListItem>

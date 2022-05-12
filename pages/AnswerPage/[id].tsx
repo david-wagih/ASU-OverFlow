@@ -12,11 +12,10 @@ import { useRouter } from "next/router";
 const AnswerDetailPage = (props: any) => {
   const [openAnswerPopUp, setOpenAnswerPopUp] = useState(false);
   const [openReplyPopUp, setOpenReplyPopUp] = useState(false);
-  const router = useRouter();
-  const { answerId } = router.query;
+  const answerId = props.id;
+  console.log(answerId);
 
-  const handleDeleteAnswer = async (props: any) => {
-    const { answerId } = props;
+  const handleDeleteAnswer = async () => {
     try {
       const deleteAnswer = await fetch(
         `https://asu-over-flow.vercel.app/api/answer/${answerId}`,
@@ -223,6 +222,7 @@ export async function getServerSideProps(ctx: any) {
       props: {
         AllRepliesJSON,
         AnswerDataJSON,
+        id,
       },
     };
   } catch (e) {
@@ -230,6 +230,7 @@ export async function getServerSideProps(ctx: any) {
       props: {
         AllRepliesJSON: [],
         AnswerDataJSON: {},
+        id: "",
       },
     };
   }

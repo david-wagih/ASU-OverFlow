@@ -175,6 +175,7 @@ const Question = (props: any) => {
         <List style={{ width: "100%" }}>
           {props?.answerData?.map((answer: any) => (
             <ListItem
+              onClick={() => router.push(`/AnswerPage/${answer.id}`)}
               style={{
                 display: "flex",
                 width: "100%",
@@ -221,13 +222,11 @@ const Question = (props: any) => {
                 title="Add a Reply"
                 openPopUp={openReplyPopUp}
                 setOpenPopUp={setOpenReplyPopUp}
-                questionId={questionId}
               >
                 <AddReplyForm
                   answerId={answer.id}
                   openPopUp={openReplyPopUp}
                   setOpenPopUp={setOpenReplyPopUp}
-                  questionId={questionId}
                   userEmail={data?.user?.email}
                 />
               </PopUp>

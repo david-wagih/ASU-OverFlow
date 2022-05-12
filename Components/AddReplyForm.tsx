@@ -8,14 +8,13 @@ import { Router } from "express";
 import { useRouter } from "next/router";
 
 const AddReplyForm = (props: any) => {
-  const { answerId, openPopUp, setOpenPopUp, questionId, userEmail } = props;
+  const { answerId, setOpenPopUp, userEmail } = props;
   const [value, setValue] = useState();
 
   const handleInputField = (e: any) => {
     setValue(e.target.value);
   };
 
-  // todo : need to implement here to create a reply in the database
   const handleSubmit = async (event: any) => {
     try {
       console.log(answerId);

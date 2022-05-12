@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { Button, FormGroup, Input } from "@mui/material";
 
 const EditAnswerForm = (props: any) => {
-  const { answerId, openPopUp, setOpenPopUp, questionId, userEmail } = props;
+  const { answerId, setOpenPopUp, userEmail } = props;
   const { data } = useSession();
   const [value, setValue] = useState();
   const router = useRouter();

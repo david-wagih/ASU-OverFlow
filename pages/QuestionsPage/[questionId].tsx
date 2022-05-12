@@ -20,8 +20,7 @@ import { getSession, useSession } from "next-auth/react";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import EditQuestionForm from "../../Components/EditQuestionForm";
-import EditAnswerForm from "../../Components/EditAnswerForm";
-import AddReplyForm from "../../Components/AddReplyForm";
+
 import { Typography } from "@material-ui/core";
 
 // this is the question details pages
@@ -32,8 +31,6 @@ const Question = (props: any) => {
   const { data } = useSession();
   const { questionId } = router.query;
   const [openQuestionPopUp, setOpenQuestionPopUp] = useState(false);
-  const [openAnswerPopUp, setOpenAnswerPopUp] = useState(false);
-  const [openReplyPopUp, setOpenReplyPopUp] = useState(false);
 
   const handleDeleteQuestion = async () => {
     const deleteQuestion = await fetch(
@@ -53,31 +50,6 @@ const Question = (props: any) => {
     router.push("/QuestionsPage");
   };
 
-  const handleEditAnswer = async () => {
-    setOpenAnswerPopUp(true);
-  };
-  const handleDeleteAnswer = async (props: any) => {
-    const { answerId } = props;
-    try {
-      const deleteAnswer = await fetch(
-        `https://asu-over-flow.vercel.app/api/answer/${answerId}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            id: answerId,
-          }),
-        }
-      );
-      const deleteAnswerJSON = await deleteAnswer.json();
-      console.log(deleteAnswerJSON);
-      window.location.reload();
-    } catch (e) {
-      console.log(e);
-    }
-  };
   return (
     <>
       <Grid
@@ -206,31 +178,6 @@ const Question = (props: any) => {
                 questionId={questionId}
                 userEmail={data?.user?.email}
               />
-              <PopUp
-                title="Edit Answer"
-                openPopUp={openAnswerPopUp}
-                setOpenPopUp={setOpenAnswerPopUp}
-              >
-                <EditAnswerForm
-                  answerId={answer.id}
-                  openPopUp={openAnswerPopUp}
-                  setOpenPopUp={setOpenAnswerPopUp}
-                  questionId={questionId}
-                  userEmail={data?.user?.email}
-                />
-              </PopUp>
-              <PopUp
-                title="Add a Reply"
-                openPopUp={openReplyPopUp}
-                setOpenPopUp={setOpenReplyPopUp}
-              >
-                <AddReplyForm
-                  answerId={answer.id}
-                  openPopUp={openReplyPopUp}
-                  setOpenPopUp={setOpenReplyPopUp}
-                  userEmail={data?.user?.email}
-                />
-              </PopUp>
               <div
                 style={{
                   display: "flex",
@@ -239,54 +186,6 @@ const Question = (props: any) => {
                   marginLeft: "80px",
                 }}
               >
-                <Button
-                  disabled={
-                    answer.userEmail !== data?.user?.email ? true : false
-                  }
-                  onClick={handleEditAnswer}
-                >
-                  <EditIcon color="success" />
-                </Button>
-                <Button
-                  disabled={
-                    answer.userEmail !== data?.user?.email ? true : false
-                  }
-                  onClick={() => handleDeleteAnswer({ answerId: answer.id })}
-                >
-                  <DeleteForeverIcon color="error" />
-                </Button>
-                <Button
-                  variant="contained"
-                  style={{
-                    marginLeft: "20px",
-                  }}
-                  onClick={() => setOpenReplyPopUp(true)}
-                >
-                  <Typography
-                    style={{
-                      fontSize: "15px",
-                      fontWeight: "regular",
-                    }}
-                  >
-                    new Reply
-                  </Typography>
-                </Button>
-                <Button
-                  variant="contained"
-                  style={{
-                    marginLeft: "20px",
-                  }}
-                  onClick={() => router.push(`/AnswerPage/${answer.id}`)}
-                >
-                  <Typography
-                    style={{
-                      fontSize: "15px",
-                      fontWeight: "regular",
-                    }}
-                  >
-                    View All Replies
-                  </Typography>
-                </Button>
                 <Button
                   disabled={
                     props?.questionData?.userEmail !== data?.user?.email

@@ -147,7 +147,6 @@ const Question = (props: any) => {
         <List style={{ width: "100%" }}>
           {props?.answerData?.map((answer: any) => (
             <ListItem
-              onClick={() => router.push(`/AnswerPage/${answer.id}`)}
               style={{
                 display: "flex",
                 width: "100%",
@@ -168,6 +167,7 @@ const Question = (props: any) => {
                 <InitialsAvatar name={answer.userEmail} />
               </ListItemAvatar>
               <ListItemText
+                onClick={() => router.push(`/AnswerPage/${answer.id}`)}
                 primary={answer.content}
                 secondary={answer.createdAt}
               ></ListItemText>

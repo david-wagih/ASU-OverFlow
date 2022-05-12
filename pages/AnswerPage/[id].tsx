@@ -12,6 +12,7 @@ import { useRouter } from "next/router";
 const AnswerDetailPage = (props: any) => {
   const [openAnswerPopUp, setOpenAnswerPopUp] = useState(false);
   const [openReplyPopUp, setOpenReplyPopUp] = useState(false);
+  const router = useRouter();
   const answerId = props.id;
   console.log(answerId);
 
@@ -32,6 +33,7 @@ const AnswerDetailPage = (props: any) => {
       const deleteAnswerJSON = await deleteAnswer.json();
       console.log(deleteAnswerJSON);
       window.location.reload();
+      router.push("/");
     } catch (e) {
       console.log(e);
     }

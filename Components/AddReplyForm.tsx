@@ -18,6 +18,8 @@ const AddReplyForm = (props: any) => {
   const handleSubmit = async (event: any) => {
     try {
       console.log(answerId);
+      console.log(userEmail);
+      console.log(value);
       event.preventDefault();
       const newReply = await fetch(
         `https://asu-over-flow.vercel.app/api/answer/${answerId}/reply/create`,

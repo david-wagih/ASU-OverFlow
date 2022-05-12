@@ -178,7 +178,6 @@ const AnswerDetailPage = (props: any) => {
         >
           <EditAnswerForm
             answerId={answerId}
-            openPopUp={openAnswerPopUp}
             setOpenPopUp={setOpenAnswerPopUp}
             userEmail={data?.user?.email}
           />
@@ -190,7 +189,6 @@ const AnswerDetailPage = (props: any) => {
         >
           <AddReplyForm
             answerId={answerId}
-            openPopUp={openReplyPopUp}
             setOpenPopUp={setOpenReplyPopUp}
             userEmail={data?.user?.email}
           />

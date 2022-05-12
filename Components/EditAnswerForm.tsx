@@ -5,15 +5,12 @@ import { Button, FormGroup, Input } from "@mui/material";
 
 const EditAnswerForm = (props: any) => {
   const { answerId, setOpenPopUp, userEmail } = props;
-  const { data } = useSession();
   const [value, setValue] = useState();
-  const router = useRouter();
 
   const handleInputField = (e: any) => {
     setValue(e.target.value);
   };
 
-  // todo : need to implement here to post the question in the database
   const handleUpdate = async (event: any) => {
     try {
       event.preventDefault();

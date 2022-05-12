@@ -4,9 +4,17 @@ import { Row } from "react-bootstrap";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { useSession } from "next-auth/react";
+import PopUp from "../../Components/PopUp";
+import EditAnswerForm from "../../Components/EditAnswerForm";
+import AddReplyForm from "../../Components/AddReplyForm";
+import { useRouter } from "next/router";
 
 const AnswerDetailPage = (props: any) => {
   const [openAnswerPopUp, setOpenAnswerPopUp] = useState(false);
+  const [openReplyPopUp, setOpenReplyPopUp] = useState(false);
+  const router = useRouter();
+  const { answerId } = router.query;
+
   const handleDeleteAnswer = async (props: any) => {
     const { answerId } = props;
     try {
@@ -86,6 +94,15 @@ const AnswerDetailPage = (props: any) => {
         >
           <DeleteForeverIcon color="error" />
         </Button>
+        <Button
+          style={{
+            width: 100,
+          }}
+          variant="contained"
+          onClick={() => setOpenReplyPopUp(true)}
+        >
+          Add a Reply
+        </Button>
       </div>
       <div
         style={{
@@ -154,6 +171,30 @@ const AnswerDetailPage = (props: any) => {
             </ListItem>
           ))}
         </List>
+        <PopUp
+          title="Edit Answer"
+          openPopUp={openAnswerPopUp}
+          setOpenPopUp={setOpenAnswerPopUp}
+        >
+          <EditAnswerForm
+            answerId={answerId}
+            openPopUp={openAnswerPopUp}
+            setOpenPopUp={setOpenAnswerPopUp}
+            userEmail={data?.user?.email}
+          />
+        </PopUp>
+        <PopUp
+          title="Add a Reply"
+          openPopUp={openReplyPopUp}
+          setOpenPopUp={setOpenReplyPopUp}
+        >
+          <AddReplyForm
+            answerId={answerId}
+            openPopUp={openReplyPopUp}
+            setOpenPopUp={setOpenReplyPopUp}
+            userEmail={data?.user?.email}
+          />
+        </PopUp>
       </div>
     </Grid>
   );

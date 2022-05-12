@@ -184,6 +184,7 @@ const Question = (props: any) => {
                 borderRadius: "10px",
                 marginTop: 20,
                 backgroundColor: answer.isSolution ? "#FFEE00" : "white",
+                cursor: "pointer",
               }}
               key={answer.id}
             >

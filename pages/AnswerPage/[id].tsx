@@ -176,7 +176,9 @@ export async function getServerSideProps(ctx: any) {
     );
     const AllRepliesJSON = AllReplies ? await AllReplies.json() : null;
 
-    const AnswerData = await fetch(`http://localhost:3000/api/answer/${id}`);
+    const AnswerData = await fetch(
+      `https://asu-over-flow.vercel.app/api/answer/${id}`
+    );
     const AnswerDataJSON = AnswerData ? await AnswerData.json() : null;
     return {
       props: {

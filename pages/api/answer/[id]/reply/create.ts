@@ -13,7 +13,7 @@ const postReply = async (req: NextApiRequest, res: NextApiResponse) => {
       userEmail: userEmail,
     },
   });
-  res.json(reply);
+  res.status(200).json(reply);
 };
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {

@@ -17,14 +17,18 @@ const getAllPendingRequests = async (
 };
 
 const postRequest = async (req: NextApiRequest, res: NextApiResponse) => {
-  const { userEmail } = req.body;
+  try {
+    const { userEmail } = req.body;
 
-  const newRequest = await prisma.request.create({
-    data: {
-      userEmail,
-    },
-  });
-  res.status(200).json(newRequest);
+    const newRequest = await prisma.request.create({
+      data: {
+        userEmail: userEmail,
+      },
+    });
+    res.status(200).json(newRequest);
+  } catch (e) {
+    res.status(200).json(e);
+  }
 };
 
 const updateRequest = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -41,16 +45,11 @@ const updateRequest = async (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  switch (req.method) {
-    case "GET":
-      await getAllPendingRequests(req, res);
-      break;
-    case "POST":
-      await postRequest(req, res);
-      break;
-    case "PUT":
-      await updateRequest(req, res);
-      break;
-    default:
+  if (req.method === "GET") {
+    await getAllPendingRequests(req, res);
+  } else if (req.method === "POST") {
+    await postRequest(req, res);
+  } else if (req.method === "PUT") {
+    await updateRequest(req, res);
   }
 };

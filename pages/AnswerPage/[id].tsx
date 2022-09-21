@@ -31,7 +31,7 @@ const AnswerDetailPage = (props: any) => {
         }
       );
       const deleteAnswerJSON = await deleteAnswer.json();
-      console.log(deleteAnswerJSON);
+      // console.log(deleteAnswerJSON);
       window.location.reload();
     } catch (e) {
       console.log(e);

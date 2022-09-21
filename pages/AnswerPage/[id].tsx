@@ -8,6 +8,7 @@ import PopUp from "../../Components/PopUp";
 import EditAnswerForm from "../../Components/EditAnswerForm";
 import AddReplyForm from "../../Components/AddReplyForm";
 import { useRouter } from "next/router";
+import { InferGetServerSidePropsType } from "next";
 
 const AnswerDetailPage = (props: any) => {
   const [openAnswerPopUp, setOpenAnswerPopUp] = useState(false);
@@ -19,7 +20,7 @@ const AnswerDetailPage = (props: any) => {
   const handleDeleteAnswer = async () => {
     try {
       const deleteAnswer = await fetch(
-        `https://asu-over-flow.vercel.app/api/answer/${answerId}`,
+        `${process.env.NEXT_PUBLIC_HOST}/api/answer/${answerId}`,
         {
           method: "DELETE",
           headers: {
@@ -202,7 +203,7 @@ export async function getServerSideProps(ctx: any) {
   try {
     const { id } = ctx.query;
     const AllReplies = await fetch(
-      `https://asu-over-flow.vercel.app/api/answer/${id}/reply`,
+      `${process.env.NEXT_PUBLIC_HOST}/api/answer/${id}/reply`,
       {
         method: "POST",
         headers: {
@@ -216,7 +217,7 @@ export async function getServerSideProps(ctx: any) {
     const AllRepliesJSON = AllReplies ? await AllReplies.json() : null;
 
     const AnswerData = await fetch(
-      `https://asu-over-flow.vercel.app/api/answer/${id}`
+      `${process.env.NEXT_PUBLIC_HOST}/api/answer/${id}`
     );
     const AnswerDataJSON = AnswerData ? await AnswerData.json() : null;
     return {

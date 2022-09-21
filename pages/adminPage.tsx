@@ -1,7 +1,10 @@
 import { Button, List, ListItem, ListItemText } from "@mui/material";
 import React from "react";
+import { InferGetServerSidePropsType } from "next";
 
-const adminPage = (props: any) => {
+const adminPage = (
+  props: InferGetServerSidePropsType<typeof getServerSideProps>
+) => {
   return (
     <>
       <h1
@@ -54,7 +57,7 @@ const adminPage = (props: any) => {
                 color="success"
                 onClick={async () => {
                   await fetch(
-                    "https://asu-over-flow.vercel.app/api/user/requests",
+                    `${process.env.NEXT_PUBLIC_HOST}/api/user/requests`,
                     {
                       method: "PUT",
                       headers: {
@@ -67,7 +70,7 @@ const adminPage = (props: any) => {
                     }
                   );
                   await fetch(
-                    `https://asu-over-flow.vercel.app/api/user/${request.userEmail}`,
+                    `${process.env.NEXT_PUBLIC_HOST}/api/user/${request.userEmail}`,
                     {
                       method: "PUT",
                       headers: {
@@ -93,7 +96,7 @@ const adminPage = (props: any) => {
                 color="error"
                 onClick={async () => {
                   await fetch(
-                    "https://asu-over-flow.vercel.app/api/user/requests",
+                    `${process.env.NEXT_PUBLIC_HOST}/api/user/requests`,
                     {
                       method: "PUT",
                       headers: {
@@ -166,7 +169,7 @@ const adminPage = (props: any) => {
                 variant="contained"
                 color="success"
                 onClick={async () => {
-                  await fetch("https://asu-over-flow.vercel.app/api/admin", {
+                  await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/admin`, {
                     method: "PUT",
                     headers: {
                       "Content-Type": "application/json",
@@ -190,7 +193,7 @@ const adminPage = (props: any) => {
                 variant="contained"
                 color="error"
                 onClick={async () => {
-                  await fetch("https://asu-over-flow.vercel.app/api/admin", {
+                  await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/admin`, {
                     method: "PUT",
                     headers: {
                       "Content-Type": "application/json",
@@ -216,7 +219,7 @@ const adminPage = (props: any) => {
 export async function getServerSideProps(ctx: any) {
   try {
     const allRequests = await fetch(
-      "https://asu-over-flow.vercel.app/api/user/requests",
+      `${process.env.NEXT_PUBLIC_HOST}/api/user/requests`,
       {
         method: "GET",
         headers: {
@@ -227,7 +230,7 @@ export async function getServerSideProps(ctx: any) {
     const allRequestsJson = allRequests ? await allRequests.json() : null;
 
     const allUsers = await fetch(
-      "https://asu-over-flow.vercel.app/api/user/allUsers",
+      `${process.env.NEXT_PUBLIC_HOST}/api/user/allUsers`,
       {
         method: "GET",
         headers: {

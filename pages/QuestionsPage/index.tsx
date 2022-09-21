@@ -20,8 +20,9 @@ import { CategoriesIcons } from "../../utils/CategoriesIcons";
 import PopUp from "../../Components/PopUp";
 import AddQuestionForm from "../../Components/AddQuestionForm";
 import { getSession, useSession } from "next-auth/react";
+import { InferGetServerSidePropsType } from "next";
 
-const QuestionsPage = (props: any) => {
+const QuestionsPage = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const [value, setValue] = useState("");
   const [categoryfield, setCategoryfield] = useState("");
   const router = useRouter();
@@ -39,7 +40,7 @@ const QuestionsPage = (props: any) => {
   const handleRequestPrivilege = async () => {
     try {
       const newRequest = await fetch(
-        "https://asu-over-flow.vercel.app/api/user/requests",
+        `${process.env.NEXT_PUBLIC_HOST}/api/user/requests`,
         {
           method: "POST",
           headers: {
@@ -218,17 +219,17 @@ export async function getServerSideProps(ctx: any) {
   try {
     const session = await getSession(ctx);
 
-    const data1 = await fetch("https://asu-over-flow.vercel.app/api/question/");
+    const data1 = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/question/`);
 
     const questions = data1 ? await data1.json() : null;
 
     const user = await fetch(
-      `https://asu-over-flow.vercel.app/api/user/${session?.user?.email}`
+      `${process.env.NEXT_PUBLIC_HOST}/api/user/${session?.user?.email}`
     );
     const userData = user ? await user?.json() : null;
 
     const myRequest = await fetch(
-      `https://asu-over-flow.vercel.app/api/user/requests/${session?.user?.email}`
+      `${process.env.NEXT_PUBLIC_HOST}/api/user/requests/${session?.user?.email}`
     );
     const myRequestData = myRequest ? await myRequest.json() : null;
 

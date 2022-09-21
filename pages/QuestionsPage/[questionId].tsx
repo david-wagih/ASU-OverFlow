@@ -22,10 +22,11 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import EditQuestionForm from "../../Components/EditQuestionForm";
 
 import { Typography } from "@material-ui/core";
+import { InferGetServerSidePropsType } from "next";
 
 // this is the question details pages
 
-const Question = (props: any) => {
+const Question = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const [openPopUp, setOpenPopUp] = useState(false);
   const router = useRouter();
   const { data } = useSession();
@@ -34,7 +35,7 @@ const Question = (props: any) => {
 
   const handleDeleteQuestion = async () => {
     const deleteQuestion = await fetch(
-      `https://asu-over-flow.vercel.app/api/question/${questionId}`,
+      `${process.env.NEXT_PUBLIC_HOST}/api/question/${questionId}`,
       {
         method: "DELETE",
         headers: {
@@ -192,7 +193,7 @@ const Question = (props: any) => {
                   }
                   onClick={async () => {
                     await fetch(
-                      `https://asu-over-flow.vercel.app/api/answer/${answer.id}/solution`,
+                      `${process.env.NEXT_PUBLIC_HOST}/api/answer/${answer.id}/solution`,
                       {
                         method: "PUT",
                         headers: {
@@ -228,7 +229,7 @@ const Question = (props: any) => {
                   }
                   onClick={async () => {
                     await fetch(
-                      `https://asu-over-flow.vercel.app/api/answer/${answer.id}/solution`,
+                      `${process.env.NEXT_PUBLIC_HOST}/api/answer/${answer.id}/solution`,
                       {
                         method: "PUT",
                         headers: {
@@ -300,17 +301,17 @@ export async function getServerSideProps(ctx: any) {
   try {
     const session = await getSession(ctx);
     const question = await fetch(
-      `https://asu-over-flow.vercel.app/api/question/${ctx.query.questionId}`
+      `${process.env.NEXT_PUBLIC_HOST}/api/question/${ctx.query.questionId}`
     );
     const questionData = question ? await question.json() : null;
 
     const answers = await fetch(
-      `https://asu-over-flow.vercel.app/api/answer/question/${ctx.query.questionId}`
+      `${process.env.NEXT_PUBLIC_HOST}/api/answer/question/${ctx.query.questionId}`
     );
     const answerData = answers ? await answers.json() : null;
 
     const user = await fetch(
-      `https://asu-over-flow.vercel.app/api/user/${session?.user?.email}`
+      `${process.env.NEXT_PUBLIC_HOST}/api/user/${session?.user?.email}`
     );
     const userData = user ? await user?.json() : null;
 

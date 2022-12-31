@@ -1,12 +1,9 @@
-/* eslint-disable @next/next/no-img-element */
 import { FormControl, TextField, Button } from "@mui/material";
 import { width } from "@mui/system";
 import type { NextPage } from "next";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
-
-// needed to be implemented to send an the message as an email to davidwagih62@gmail.com
 
 const handleMessageInput = (value: any) => {
   window.open(`mailto:davidwagih62@gmail.com?subject=&body=${value}`);

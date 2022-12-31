@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 import React from "react";
 import { Container, Row } from "react-bootstrap";
 import { getSession, useSession } from "next-auth/react";
@@ -13,12 +12,11 @@ import {
 import { CategoriesIcons } from "../utils/CategoriesIcons";
 import { useRouter } from "next/router";
 import { InferGetServerSidePropsType } from "next";
+import getUserQuestions from "../services/userServices";
 
-// want to use user data from next-auth
-// @ts-ignore
-// we here could get all the user data needed from the session
-
-const ProfilePage = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const ProfilePage = (
+  props: InferGetServerSidePropsType<typeof getServerSideProps>
+) => {
   const { data, status } = useSession();
   const router = useRouter();
 
@@ -98,10 +96,7 @@ const ProfilePage = (props: InferGetServerSidePropsType<typeof getServerSideProp
 };
 export async function getServerSideProps(ctx: any) {
   const session = await getSession(ctx);
-  const myQuestions = await fetch(
-    `${process.env.NEXT_PUBLIC_HOST}/api/question/user/${session?.user?.email}`
-  );
-  const questions = await myQuestions.json();
+  const questions = await getUserQuestions(session);
 
   return {
     props: {

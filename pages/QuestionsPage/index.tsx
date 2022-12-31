@@ -21,8 +21,11 @@ import PopUp from "../../Components/PopUp";
 import AddQuestionForm from "../../Components/AddQuestionForm";
 import { getSession, useSession } from "next-auth/react";
 import { InferGetServerSidePropsType } from "next";
+import { createAnswerPriviledgeRequest } from "../../services/userServices";
 
-const QuestionsPage = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const QuestionsPage = (
+  props: InferGetServerSidePropsType<typeof getServerSideProps>
+) => {
   const [value, setValue] = useState("");
   const [categoryfield, setCategoryfield] = useState("");
   const router = useRouter();
@@ -38,23 +41,9 @@ const QuestionsPage = (props: InferGetServerSidePropsType<typeof getServerSidePr
   };
 
   const handleRequestPrivilege = async () => {
-    try {
-      const newRequest = await fetch(
-        `${process.env.NEXT_PUBLIC_HOST}/api/user/requests`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            userEmail: data?.user?.email,
-          }),
-        }
-      );
-      const newRequestData = newRequest ? await newRequest.json() : null;
-      console.log(newRequestData);
-    } catch (e) {
-      console.log(e);
+    const res = await createAnswerPriviledgeRequest(data?.user?.email!);
+    if (res) {
+      window.location.reload();
     }
   };
 

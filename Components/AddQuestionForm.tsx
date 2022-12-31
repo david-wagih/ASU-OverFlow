@@ -4,14 +4,18 @@ import { useSession } from "next-auth/react";
 import React, { useState } from "react";
 import { CategoryOptions } from "../utils/categoryOptions";
 import { NextApiRequest, NextApiResponse } from "next";
+import { createQuestion } from "../services/userServices";
 
 // todo : this method will handle the post request to add new question to the database
 
 const AddQuestionForm = (props: any) => {
   const { openPopUp, setOpenPopUp } = props;
   const { data } = useSession();
-  const [value, setValue] = useState();
-  const [categoryfield, setCategoryfield] = useState();
+  const [value, setValue] = useState("");
+  const [categoryfield, setCategoryfield] = useState({
+    value: "0",
+    label: "Choose Category",
+  });
 
   const handleInputField = (e: any) => {
     setValue(e.target.value);
@@ -20,27 +24,16 @@ const AddQuestionForm = (props: any) => {
     setCategoryfield(categoryfield);
   };
 
-  // todo : need to implement here to post the question in the database
   const handleSubmit = async (event: any) => {
     try {
       event.preventDefault();
-      const newQuestion = await fetch(
-        "https://asu-over-flow.vercel.app/api/question/create",
-        {
-          method: "POST",
-          body: JSON.stringify({
-            //@ts-ignore
-            category: categoryfield?.label,
-            content: value,
-            userEmail: data?.user?.email,
-          }),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
+
+      const newQuestion = await createQuestion(
+        categoryfield!.label!,
+        value!,
+        data!.user!.email!
       );
-      const newQuestionJson = await newQuestion.json();
-      console.log(newQuestionJson);
+      console.log(newQuestion);
       setOpenPopUp(false);
       window.location.reload();
     } catch (e) {

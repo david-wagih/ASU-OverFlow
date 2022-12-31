@@ -1,10 +1,33 @@
 import { Button, List, ListItem, ListItemText } from "@mui/material";
 import React from "react";
 import { InferGetServerSidePropsType } from "next";
+import {
+  getAllUsers,
+  getAllUsersRequests,
+  updateUserAccess,
+  updateUserRequest,
+} from "../services/adminServices";
 
 const adminPage = (
   props: InferGetServerSidePropsType<typeof getServerSideProps>
 ) => {
+  const handleRequestButton = async (
+    id: number,
+    status: string,
+    email: string
+  ) => {
+    const res = await updateUserRequest(id, status, email);
+    if (res) {
+      window.location.reload();
+    }
+  };
+
+  const handleAccessButton = async (email: string, isRestricted: boolean) => {
+    const res = await updateUserAccess(email, isRestricted);
+    if (res) {
+      window.location.reload();
+    }
+  };
   return (
     <>
       <h1
@@ -32,7 +55,7 @@ const adminPage = (
           borderRadius: "0px",
         }}
       >
-        {props?.allRequestsJson?.map((request: any) => {
+        {props?.allRequests?.map((request: any) => {
           return (
             <ListItem
               style={{
@@ -55,34 +78,9 @@ const adminPage = (
                 }}
                 variant="contained"
                 color="success"
-                onClick={async () => {
-                  await fetch(
-                    `${process.env.NEXT_PUBLIC_HOST}/api/user/requests`,
-                    {
-                      method: "PUT",
-                      headers: {
-                        "Content-Type": "application/json",
-                      },
-                      body: JSON.stringify({
-                        id: request.id,
-                        status: "accepted",
-                      }),
-                    }
-                  );
-                  await fetch(
-                    `${process.env.NEXT_PUBLIC_HOST}/api/user/${request.userEmail}`,
-                    {
-                      method: "PUT",
-                      headers: {
-                        "Content-Type": "application/json",
-                      },
-                      body: JSON.stringify({
-                        hasPrivilege: true,
-                      }),
-                    }
-                  );
-                  window.location.reload();
-                }}
+                onClick={() =>
+                  handleRequestButton(request.id, "accepted", request.email)
+                }
               >
                 Accept
               </Button>
@@ -94,22 +92,9 @@ const adminPage = (
                 }}
                 variant="contained"
                 color="error"
-                onClick={async () => {
-                  await fetch(
-                    `${process.env.NEXT_PUBLIC_HOST}/api/user/requests`,
-                    {
-                      method: "PUT",
-                      headers: {
-                        "Content-Type": "application/json",
-                      },
-                      body: JSON.stringify({
-                        id: request.id,
-                        status: "rejected",
-                      }),
-                    }
-                  );
-                  window.location.reload();
-                }}
+                onClick={() =>
+                  handleRequestButton(request.id, "rejected", request.email)
+                }
               >
                 Reject
               </Button>
@@ -142,7 +127,7 @@ const adminPage = (
           borderRadius: "0px",
         }}
       >
-        {props?.allUsersJson?.map((user: any) => {
+        {props?.allUsers?.map((user: any) => {
           return (
             <ListItem
               style={{
@@ -168,19 +153,7 @@ const adminPage = (
                 }}
                 variant="contained"
                 color="success"
-                onClick={async () => {
-                  await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/admin`, {
-                    method: "PUT",
-                    headers: {
-                      "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                      userEmail: user.email,
-                      isRestricted: false,
-                    }),
-                  });
-                  window.location.reload();
-                }}
+                onClick={() => handleAccessButton(user.email, false)}
               >
                 Give Access
               </Button>
@@ -192,19 +165,7 @@ const adminPage = (
                 }}
                 variant="contained"
                 color="error"
-                onClick={async () => {
-                  await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/admin`, {
-                    method: "PUT",
-                    headers: {
-                      "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                      userEmail: user.email,
-                      isRestricted: true,
-                    }),
-                  });
-                  window.location.reload();
-                }}
+                onClick={() => handleAccessButton(user.email, true)}
               >
                 Restrict Access
               </Button>
@@ -218,38 +179,20 @@ const adminPage = (
 
 export async function getServerSideProps(ctx: any) {
   try {
-    const allRequests = await fetch(
-      `${process.env.NEXT_PUBLIC_HOST}/api/user/requests`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    const allRequestsJson = allRequests ? await allRequests.json() : null;
+    const allRequests = await getAllUsersRequests();
 
-    const allUsers = await fetch(
-      `${process.env.NEXT_PUBLIC_HOST}/api/user/allUsers`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    const allUsersJson = allUsers ? await allUsers.json() : null;
+    const allUsers = await getAllUsers();
     return {
       props: {
-        allRequestsJson,
-        allUsersJson,
+        allRequests,
+        allUsers,
       },
     };
   } catch (e) {
     return {
       props: {
-        allRequestsJson: [],
-        allUsersJson: [],
+        allRequests: [],
+        allUsers: [],
       },
     };
   }

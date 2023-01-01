@@ -25,7 +25,7 @@ const AddAnswerForm = (props: any) => {
     try {
       event.preventDefault();
       const newAnswer = await fetch(
-        "https://asu-over-flow.vercel.app/api/answer/create",
+        `${process.env.NEXT_PUBLIC_HOST}/api/answer/create`,
         {
           method: "POST",
           body: JSON.stringify({

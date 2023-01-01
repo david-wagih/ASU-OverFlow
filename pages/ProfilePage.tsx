@@ -12,7 +12,7 @@ import {
 import { CategoriesIcons } from "../utils/CategoriesIcons";
 import { useRouter } from "next/router";
 import { InferGetServerSidePropsType } from "next";
-import getUserQuestions from "../services/userServices";
+import { getUserQuestions } from "../services/userServices";
 
 const ProfilePage = (
   props: InferGetServerSidePropsType<typeof getServerSideProps>

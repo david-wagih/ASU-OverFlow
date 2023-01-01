@@ -18,7 +18,7 @@ const AddReplyForm = (props: any) => {
   const handleSubmit = async (event: any) => {
     try {
       const newReply = await fetch(
-        `https://asu-over-flow.vercel.app/api/answer/${answerId}/reply/create`,
+        `${process.env.NEXT_PUBLIC_HOST}/api/answer/${answerId}/reply/create`,
         {
           method: "POST",
           headers: {

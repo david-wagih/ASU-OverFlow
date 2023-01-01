@@ -6,12 +6,10 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 const UpVoteDownVote = (props: any) => {
   const { UpVotes, DownVotes, answerId, questionId, userEmail } = props;
 
-  // todo: 1- need to limit the voting for each user for specifically one vote either up or down
-  // todo: 2- need to change the GUI to save the Upvotes in one box and the down votes in another box to give clear indication of the vote
   const handleAddingVote = async () => {
-    // we need first to check if user has already voted to the answer or not
     const hasVoted = await fetch(
-      `https://asu-over-flow.vercel.app/api/answer/${answerId}/votes/check`,
+      `
+      ${process.env.NEXT_PUBLIC_HOST}/api/answer/${answerId}/votes/check`,
       {
         method: "POST",
         headers: {
@@ -31,7 +29,7 @@ const UpVoteDownVote = (props: any) => {
     } else if (hasVotedData.voted === true && hasVotedData.downVoted === true) {
       // here we should handle the case that user pressed up vote after pressing down vote before
       const updateUserVote = await fetch(
-        `https://asu-over-flow.vercel.app/api/answer/${answerId}/votes`,
+        `${process.env.NEXT_PUBLIC_HOST}/api/answer/${answerId}/votes`,
         {
           method: "PUT",
           headers: {
@@ -49,7 +47,7 @@ const UpVoteDownVote = (props: any) => {
       const updateUserVoteData = await updateUserVote.json();
       console.log(updateUserVoteData);
       const updateVote = await fetch(
-        `https://asu-over-flow.vercel.app/api/answer/${answerId}`,
+        `${process.env.NEXT_PUBLIC_HOST}/api/answer/${answerId}`,
         {
           method: "PUT",
           headers: {
@@ -70,7 +68,7 @@ const UpVoteDownVote = (props: any) => {
       // voted variable is false i mean
 
       const newVote = await fetch(
-        `https://asu-over-flow.vercel.app/api/answer/${answerId}/votes`,
+        `${process.env.NEXT_PUBLIC_HOST}/api/answer/${answerId}/votes`,
         {
           method: "POST",
           headers: {
@@ -87,10 +85,9 @@ const UpVoteDownVote = (props: any) => {
       );
       const newVoteData = await newVote.json();
       console.log(newVoteData);
-      // then add this vote to the UpVotes counter of this answer then refresh the page for the change to take place
 
       const updateVote = await fetch(
-        `https://asu-over-flow.vercel.app/api/answer/${answerId}`,
+        `${process.env.NEXT_PUBLIC_HOST}/api/answer/${answerId}`,
         {
           method: "PUT",
           headers: {
@@ -111,7 +108,7 @@ const UpVoteDownVote = (props: any) => {
   const handleRemovingVote = async () => {
     try {
       const hasVoted = await fetch(
-        `https://asu-over-flow.vercel.app/api/answer/${answerId}/votes/check`,
+        `${process.env.NEXT_PUBLIC_HOST}/api/answer/${answerId}/votes/check`,
         {
           method: "POST",
           headers: {
@@ -131,7 +128,7 @@ const UpVoteDownVote = (props: any) => {
       } else if (hasVotedData.voted === true && hasVotedData.upVoted === true) {
         // here we should handle the case that user pressed up vote after pressing down vote before
         const updateUserVote = await fetch(
-          `https://asu-over-flow.vercel.app/api/answer/${answerId}/votes`,
+          `${process.env.NEXT_PUBLIC_HOST}/api/answer/${answerId}/votes`,
           {
             method: "PUT",
             headers: {
@@ -149,7 +146,7 @@ const UpVoteDownVote = (props: any) => {
         const updateUserVoteData = await updateUserVote.json();
         console.log(updateUserVoteData);
         const updateVote = await fetch(
-          `https://asu-over-flow.vercel.app/api/answer/${answerId}`,
+          `${process.env.NEXT_PUBLIC_HOST}/api/answer/${answerId}`,
           {
             method: "PUT",
             headers: {
@@ -170,7 +167,7 @@ const UpVoteDownVote = (props: any) => {
         // didn't vote before
 
         const newVote = await fetch(
-          `https://asu-over-flow.vercel.app/api/answer/${answerId}/votes`,
+          `${process.env.NEXT_PUBLIC_HOST}/api/answer/${answerId}/votes`,
           {
             method: "POST",
             headers: {
@@ -190,7 +187,7 @@ const UpVoteDownVote = (props: any) => {
         // then add this vote to the UpVotes counter of this answer then refresh the page for the change to take place
 
         const updateVote = await fetch(
-          `https://asu-over-flow.vercel.app/api/answer/${answerId}`,
+          `${process.env.NEXT_PUBLIC_HOST}/api/answer/${answerId}`,
           {
             method: "PUT",
             headers: {

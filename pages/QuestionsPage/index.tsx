@@ -10,6 +10,7 @@ import {
   ListItemAvatar,
   ListItemText,
   TextField,
+  Typography
 } from "@mui/material";
 import React, { useState } from "react";
 import { Row } from "react-bootstrap";
@@ -30,6 +31,7 @@ const QuestionsPage = (
   const [categoryfield, setCategoryfield] = useState("");
   const router = useRouter();
   const { data } = useSession();
+  const [hover, setHover] = useState(false);
 
   const handleSearchField = (e: any) => {
     setValue(e.target.value);
@@ -55,7 +57,7 @@ const QuestionsPage = (
       <Grid
         style={{
           margin: "0 auto",
-          maxWidth: "1000px",
+          maxWidth: "1000px"
         }}
       >
         <Row
@@ -65,14 +67,14 @@ const QuestionsPage = (
             marginLeft: 20,
             justifyContent: "left",
             alignContent: "left",
-            display: "flex",
+            display: "flex"
           }}
         >
           <div style={{ width: 500 }}>
             <p
               style={{
                 fontSize: 15,
-                fontWeight: "bold",
+                fontWeight: "bold"
               }}
             >
               Choose Your favorite Category and search for a question:
@@ -95,20 +97,20 @@ const QuestionsPage = (
             marginLeft: 20,
             justifyContent: "left",
             alignContent: "left",
-            display: "flex",
+            display: "flex"
           }}
         >
           <div
             style={{
               width: 500,
               alignItems: "center",
-              justifyContent: "center",
+              justifyContent: "center"
             }}
           >
             <TextField
               style={{
                 marginTop: "5px",
-                marginBottom: "5px",
+                marginBottom: "5px"
               }}
               placeholder="Search"
               onChange={handleSearchField}
@@ -118,8 +120,14 @@ const QuestionsPage = (
           </div>
           <Button
             style={{
-              width: 150,
+              width: "150px",
               borderRadius: "10px",
+              backgroundColor: "#3f51b5",
+              color: "#ffffff",
+              padding: "10px 20px",
+              fontWeight: "bold",
+              textTransform: "uppercase",
+              transition: "all 0.3s"
             }}
             variant="contained"
             onClick={() => setOpenPopUp(true)}
@@ -136,7 +144,7 @@ const QuestionsPage = (
                 props?.userData?.hasPrivilege === false &&
                 props?.myRequestData === null
                   ? "inline-block"
-                  : "none",
+                  : "none"
             }}
             variant="contained"
             color="warning"
@@ -161,16 +169,22 @@ const QuestionsPage = (
             })
             .map((question: any) => (
               <ListItem
+                button
                 style={{
-                  cursor: "pointer",
                   borderRadius: "10px",
-                  boxShadow: "0px 0px 2px #000000",
-                  marginTop: 20,
-                  backgroundColor: "#F5F5F5",
+                  boxShadow: hover
+                    ? "0px 0px 5px #555555"
+                    : "0px 0px 2px #000000",
+                  backgroundColor: hover ? "#EFEFEF" : "#F5F5F5",
+                  marginTop: "20px",
+                  padding: "20px",
+                  transition: "all 0.3s"
                 }}
                 onClick={() => {
                   router.push("/QuestionsPage/" + question.id);
                 }}
+                onMouseEnter={() => setHover(true)}
+                onMouseLeave={() => setHover(false)}
                 key={question.id}
               >
                 <ListItemAvatar>
@@ -186,13 +200,16 @@ const QuestionsPage = (
                         ? CategoriesIcons[2]
                         : CategoriesIcons[3]
                     }
-                  ></Avatar>
+                  />
                 </ListItemAvatar>
                 <ListItemText
                   primary={question.content}
-                  secondary={question.createdAt}
-                ></ListItemText>
-                <ListItemText primary={question.userEmail}></ListItemText>
+                  secondary={question.userEmail}
+                  style={{ marginLeft: "20px" }}
+                />
+                <Typography variant="caption" style={{ marginLeft: "auto" }}>
+                  {question.createdAt}
+                </Typography>
               </ListItem>
             ))}
         </List>
@@ -226,16 +243,16 @@ export async function getServerSideProps(ctx: any) {
       props: {
         questions,
         userData,
-        myRequestData,
-      },
+        myRequestData
+      }
     };
   } catch (e) {
     return {
       props: {
         questions: [],
         userData: null,
-        myRequestData: null,
-      },
+        myRequestData: null
+      }
     };
   }
 }

@@ -6,7 +6,7 @@ import {
   List,
   ListItem,
   ListItemAvatar,
-  ListItemText,
+  ListItemText
 } from "@mui/material";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
@@ -26,7 +26,9 @@ import { InferGetServerSidePropsType } from "next";
 
 // this is the question details pages
 
-const Question = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const Question = (
+  props: InferGetServerSidePropsType<typeof getServerSideProps>
+) => {
   const [openPopUp, setOpenPopUp] = useState(false);
   const router = useRouter();
   const { data } = useSession();
@@ -39,11 +41,11 @@ const Question = (props: InferGetServerSidePropsType<typeof getServerSideProps>)
       {
         method: "DELETE",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          id: questionId,
-        }),
+          id: questionId
+        })
       }
     );
     const deleteQuestionJSON = await deleteQuestion.json();
@@ -55,91 +57,57 @@ const Question = (props: InferGetServerSidePropsType<typeof getServerSideProps>)
     <>
       <Grid
         style={{
-          margin: "20px",
+          margin: "20px"
         }}
       >
-        <Row>
-          <div
+        <Row style={{ justifyContent: "center", alignItems: "center" }}>
+          <p
             style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
+              fontSize: "45px",
+              fontWeight: "normal",
+              marginLeft: "20px",
+              marginTop: "10px",
+              color: "black"
             }}
           >
-            <p
-              style={{
-                fontSize: "45px",
-                fontWeight: "regular",
-                marginLeft: "20px",
-                marginTop: "10px",
-                color: "black",
-              }}
-            >
-              {props?.questionData?.content}
-            </p>
-          </div>
+            {props?.questionData?.content}
+          </p>
         </Row>
         <div
           style={{
             display: "flex",
             justifyContent: "center",
-            alignItems: "center",
-            marginBottom: "20px",
+            marginBottom: "20px"
           }}
         >
           <Button
-            disabled={
-              props?.questionData?.userEmail !== data?.user?.email
-                ? true
-                : false
-            }
+            disabled={props?.questionData?.userEmail !== data?.user?.email}
             onClick={() => setOpenQuestionPopUp(true)}
+            style={{ marginRight: "10px" }}
           >
-            <EditIcon color="success" />
+            <EditIcon style={{ color: "green" }} />
           </Button>
           <Button
-            disabled={
-              props?.questionData?.userEmail !== data?.user?.email
-                ? true
-                : false
-            }
+            disabled={props?.questionData?.userEmail !== data?.user?.email}
             onClick={handleDeleteQuestion}
           >
-            <DeleteForeverIcon color="error" />
+            <DeleteForeverIcon style={{ color: "red" }} />
           </Button>
         </div>
-        <Row>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <p>
-              <span
-                style={{
-                  fontSize: "15px",
-                  fontWeight: 100,
-                }}
-              >
-                Asked at {" " + " "}
-              </span>
-              {props?.questionData?.createdAt}
-            </p>
-          </div>
+
+        <Row style={{ justifyContent: "center", alignItems: "center" }}>
+          <p style={{ fontSize: "15px", fontWeight: 100 }}>
+            Asked at {props?.questionData?.createdAt}
+          </p>
         </Row>
         <Button
-          style={{
-            width: 100,
-          }}
+          style={{ width: "fit-content", marginTop: "10px" }}
           variant="contained"
+          color="primary"
           onClick={() => setOpenPopUp(true)}
           disabled={
             props?.userData?.isRestricted ||
             props?.userData?.hasPrivilege === false
-              ? true
-              : false
           }
         >
           Add an Answer
@@ -155,13 +123,13 @@ const Question = (props: InferGetServerSidePropsType<typeof getServerSideProps>)
                 boxShadow: " 0px 0px 2px #000000",
                 borderRadius: "10px",
                 marginTop: 20,
-                backgroundColor: answer.isSolution ? "#FFEE00" : "white",
+                backgroundColor: answer.isSolution ? "#FFEE00" : "white"
               }}
               key={answer.id}
             >
               <ListItemAvatar
                 style={{
-                  marginRight: "20px",
+                  marginRight: "20px"
                 }}
               >
                 <InitialsAvatar name={answer.userEmail} />
@@ -182,7 +150,7 @@ const Question = (props: InferGetServerSidePropsType<typeof getServerSideProps>)
                   display: "flex",
                   justifyContent: "space-between",
                   alignItems: "center",
-                  marginLeft: "80px",
+                  marginLeft: "80px"
                 }}
               >
                 <Button
@@ -197,25 +165,25 @@ const Question = (props: InferGetServerSidePropsType<typeof getServerSideProps>)
                       {
                         method: "PUT",
                         headers: {
-                          "Content-Type": "application/json",
+                          "Content-Type": "application/json"
                         },
                         body: JSON.stringify({
                           answerId: answer.id,
-                          isSolution: true,
-                        }),
+                          isSolution: true
+                        })
                       }
                     );
                     window.location.reload();
                   }}
                   variant="contained"
                   style={{
-                    marginLeft: "20px",
+                    marginLeft: "20px"
                   }}
                 >
                   <Typography
                     style={{
                       fontSize: "15px",
-                      fontWeight: "regular",
+                      fontWeight: "regular"
                     }}
                   >
                     Select as Solution
@@ -233,25 +201,25 @@ const Question = (props: InferGetServerSidePropsType<typeof getServerSideProps>)
                       {
                         method: "PUT",
                         headers: {
-                          "Content-Type": "application/json",
+                          "Content-Type": "application/json"
                         },
                         body: JSON.stringify({
                           answerId: answer.id,
-                          isSolution: false,
-                        }),
+                          isSolution: false
+                        })
                       }
                     );
                     window.location.reload();
                   }}
                   variant="contained"
                   style={{
-                    marginLeft: "20px",
+                    marginLeft: "20px"
                   }}
                 >
                   <Typography
                     style={{
                       fontSize: "15px",
-                      fontWeight: "regular",
+                      fontWeight: "regular"
                     }}
                   >
                     Not a Solution
@@ -259,7 +227,7 @@ const Question = (props: InferGetServerSidePropsType<typeof getServerSideProps>)
                 </Button>
                 <Button
                   style={{
-                    marginLeft: "20px",
+                    marginLeft: "20px"
                   }}
                   variant="contained"
                   onClick={() => router.push(`/AnswerPage/${answer.id}`)}
@@ -319,16 +287,16 @@ export async function getServerSideProps(ctx: any) {
       props: {
         questionData,
         answerData,
-        userData,
-      },
+        userData
+      }
     };
   } catch (e) {
     return {
       props: {
         questionData: null,
         answerData: null,
-        userData: null,
-      },
+        userData: null
+      }
     };
   }
 }

@@ -5,8 +5,9 @@ import {
   getAllUsers,
   getAllUsersRequests,
   updateUserAccess,
-  updateUserRequest,
+  updateUserRequest
 } from "../services/adminServices";
+import styles from "./adminPage.module.css";
 
 const adminPage = (
   props: InferGetServerSidePropsType<typeof getServerSideProps>
@@ -30,149 +31,66 @@ const adminPage = (
   };
   return (
     <>
-      <h1
-        style={{
-          textAlign: "center",
-          fontSize: "40px",
-          fontWeight: "bold",
-          margin: "20px",
-        }}
-      >
+      <h1 className={styles.title}>
         All Pending Requests for Answering Privilege
       </h1>
-      <List
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          width: "100%",
-          height: "100%",
-          overflow: "auto",
-          padding: "0px",
-          margin: "0px",
-          border: "none",
-          borderRadius: "0px",
-        }}
-      >
+      <ul className={styles.list}>
         {props?.allRequests?.map((request: any) => {
           return (
-            <ListItem
-              style={{
-                width: "1000px",
-                height: "100%",
-                border: " 1px solid black",
-                borderRadius: "10px",
-                boxShadow: "0px 0px 3px #000000",
-                margin: "15px",
-              }}
-              key={request.id}
-            >
-              <ListItemText primary={request.userEmail} />
-              <ListItemText primary={request.status} />
-              <Button
-                style={{
-                  width: "100px",
-                  height: "50px",
-                  margin: "10px",
-                }}
-                variant="contained"
-                color="success"
-                onClick={() =>
-                  handleRequestButton(request.id, "accepted", request.email)
-                }
-              >
-                Accept
-              </Button>
-              <Button
-                style={{
-                  width: "100px",
-                  height: "50px",
-                  margin: "10px",
-                }}
-                variant="contained"
-                color="error"
-                onClick={() =>
-                  handleRequestButton(request.id, "rejected", request.email)
-                }
-              >
-                Reject
-              </Button>
-            </ListItem>
+            <li className={styles.listItem} key={request.id}>
+              <div className={styles.listItemContent}>
+                <p>{request.userEmail}</p>
+                <p>{request.status}</p>
+              </div>
+              <div className={styles.listItemActions}>
+                <button
+                  className={styles.acceptButton}
+                  onClick={() =>
+                    handleRequestButton(request.id, "accepted", request.email)
+                  }
+                >
+                  Accept
+                </button>
+                <button
+                  className={styles.rejectButton}
+                  onClick={() =>
+                    handleRequestButton(request.id, "rejected", request.email)
+                  }
+                >
+                  Reject
+                </button>
+              </div>
+            </li>
           );
         })}
-      </List>
-      <h1
-        style={{
-          textAlign: "center",
-          fontSize: "40px",
-          fontWeight: "bold",
-          margin: "20px",
-        }}
-      >
-        All Users
-      </h1>
-      <List
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          width: "100%",
-          height: "100%",
-          overflow: "auto",
-          padding: "0px",
-          margin: "0px",
-          border: "none",
-          borderRadius: "0px",
-        }}
-      >
+      </ul>
+      <h1 className={styles.title}>All Users</h1>
+      <ul className={styles.list}>
         {props?.allUsers?.map((user: any) => {
           return (
-            <ListItem
-              style={{
-                width: "1000px",
-                height: "100%",
-                border: " 1px solid black",
-                borderRadius: "10px",
-                boxShadow: "0px 0px 3px #000000",
-                margin: "15px",
-              }}
-              key={user.id}
-            >
-              <ListItemText primary={user.email} />
-              <ListItemText
-                primary={user.isRestricted ? "is Restricted" : "normal User"}
-              />
-
-              <Button
-                style={{
-                  width: "100px",
-                  height: "50px",
-                  margin: "10px",
-                }}
-                variant="contained"
-                color="success"
-                onClick={() => handleAccessButton(user.email, false)}
-              >
-                Give Access
-              </Button>
-              <Button
-                style={{
-                  width: "100px",
-                  height: "50px",
-                  margin: "10px",
-                }}
-                variant="contained"
-                color="error"
-                onClick={() => handleAccessButton(user.email, true)}
-              >
-                Restrict Access
-              </Button>
-            </ListItem>
+            <li className={styles.listItem} key={user.id}>
+              <div className={styles.listItemContent}>
+                <p>{user.email}</p>
+                <p>{user.isRestricted ? "is Restricted" : "normal User"}</p>
+              </div>
+              <div className={styles.listItemActions}>
+                <button
+                  className={styles.giveAccessButton}
+                  onClick={() => handleAccessButton(user.email, false)}
+                >
+                  Give Access
+                </button>
+                <button
+                  className={styles.restrictAccessButton}
+                  onClick={() => handleAccessButton(user.email, true)}
+                >
+                  Restrict Access
+                </button>
+              </div>
+            </li>
           );
         })}
-      </List>
+      </ul>
     </>
   );
 };
@@ -185,15 +103,15 @@ export async function getServerSideProps(ctx: any) {
     return {
       props: {
         allRequests,
-        allUsers,
-      },
+        allUsers
+      }
     };
   } catch (e) {
     return {
       props: {
         allRequests: [],
-        allUsers: [],
-      },
+        allUsers: []
+      }
     };
   }
 }

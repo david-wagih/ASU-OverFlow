@@ -8,10 +8,10 @@ export default NextAuth({
   providers: [
     GithubProvider({
       clientId: process.env.GITHUB_ID,
-      clientSecret: process.env.GITHUB_SECRET,
-    }),
+      clientSecret: process.env.GITHUB_SECRET
+    })
   ],
   jwt: {
-    secret: process.env.JWT_SECRET,
-  },
+    secret: process.env.JWT_SECRET
+  }
 });

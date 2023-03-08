@@ -13,13 +13,13 @@ const UpVoteDownVote = (props: any) => {
       {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/json"
         },
         body: JSON.stringify({
           userEmail: userEmail,
           questionId: questionId,
-          answerId: answerId,
-        }),
+          answerId: answerId
+        })
       }
     );
     const hasVotedData = await hasVoted.json();
@@ -33,15 +33,15 @@ const UpVoteDownVote = (props: any) => {
         {
           method: "PUT",
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type": "application/json"
           },
           body: JSON.stringify({
             userEmail: userEmail,
             questionId: questionId,
             answerId: answerId,
             upVoted: true,
-            downVoted: false,
-          }),
+            downVoted: false
+          })
         }
       );
       const updateUserVoteData = await updateUserVote.json();
@@ -51,13 +51,13 @@ const UpVoteDownVote = (props: any) => {
         {
           method: "PUT",
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type": "application/json"
           },
           body: JSON.stringify({
             answerId: answerId,
             UpVotes: UpVotes + 1,
-            DownVotes: DownVotes - 1,
-          }),
+            DownVotes: DownVotes - 1
+          })
         }
       );
       const updateVoteData = await updateVote.json();
@@ -72,15 +72,15 @@ const UpVoteDownVote = (props: any) => {
         {
           method: "POST",
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type": "application/json"
           },
           body: JSON.stringify({
             userEmail: userEmail,
             questionId: questionId,
             answerId: answerId,
             upVoted: true,
-            downVoted: false,
-          }),
+            downVoted: false
+          })
         }
       );
       const newVoteData = await newVote.json();
@@ -91,13 +91,13 @@ const UpVoteDownVote = (props: any) => {
         {
           method: "PUT",
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type": "application/json"
           },
           body: JSON.stringify({
             answerId: answerId,
             UpVotes: UpVotes + 1,
-            DownVotes: DownVotes,
-          }),
+            DownVotes: DownVotes
+          })
         }
       );
       const updateVoteData = await updateVote.json();
@@ -112,13 +112,13 @@ const UpVoteDownVote = (props: any) => {
         {
           method: "POST",
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type": "application/json"
           },
           body: JSON.stringify({
             userEmail: userEmail,
             questionId: questionId,
-            answerId: answerId,
-          }),
+            answerId: answerId
+          })
         }
       );
       const hasVotedData = await hasVoted.json();
@@ -132,15 +132,15 @@ const UpVoteDownVote = (props: any) => {
           {
             method: "PUT",
             headers: {
-              "Content-Type": "application/json",
+              "Content-Type": "application/json"
             },
             body: JSON.stringify({
               userEmail: userEmail,
               questionId: questionId,
               answerId: answerId,
               upVoted: false,
-              downVoted: true,
-            }),
+              downVoted: true
+            })
           }
         );
         const updateUserVoteData = await updateUserVote.json();
@@ -150,13 +150,13 @@ const UpVoteDownVote = (props: any) => {
           {
             method: "PUT",
             headers: {
-              "Content-Type": "application/json",
+              "Content-Type": "application/json"
             },
             body: JSON.stringify({
               answerId: answerId,
               UpVotes: UpVotes - 1,
-              DownVotes: DownVotes + 1,
-            }),
+              DownVotes: DownVotes + 1
+            })
           }
         );
         const updateVoteData = await updateVote.json();
@@ -171,15 +171,15 @@ const UpVoteDownVote = (props: any) => {
           {
             method: "POST",
             headers: {
-              "Content-Type": "application/json",
+              "Content-Type": "application/json"
             },
             body: JSON.stringify({
               userEmail: userEmail,
               questionId: questionId,
               answerId: answerId,
               upVoted: false,
-              downVoted: true,
-            }),
+              downVoted: true
+            })
           }
         );
         const newVoteData = await newVote.json();
@@ -191,13 +191,13 @@ const UpVoteDownVote = (props: any) => {
           {
             method: "PUT",
             headers: {
-              "Content-Type": "application/json",
+              "Content-Type": "application/json"
             },
             body: JSON.stringify({
               answerId: answerId,
               UpVotes: UpVotes,
-              DownVotes: DownVotes + 1,
-            }),
+              DownVotes: DownVotes + 1
+            })
           }
         );
         const updateVoteData = await updateVote.json();
@@ -213,7 +213,7 @@ const UpVoteDownVote = (props: any) => {
         display: "flex",
         flexDirection: "row",
         justifyContent: "space-between",
-        alignItems: "center",
+        alignItems: "center"
       }}
     >
       <p
@@ -222,7 +222,7 @@ const UpVoteDownVote = (props: any) => {
           fontWeight: "bold",
           color: "green",
           marginRight: "1rem",
-          padding: "1rem",
+          padding: "1rem"
         }}
       >
         {UpVotes}
@@ -234,7 +234,7 @@ const UpVoteDownVote = (props: any) => {
           justifyContent: "center",
           alignItems: "center",
           flexDirection: "column",
-          marginRight: "20px",
+          marginRight: "20px"
         }}
       >
         <Button onClick={handleAddingVote}>
@@ -249,7 +249,7 @@ const UpVoteDownVote = (props: any) => {
           fontSize: "1.5rem",
           fontWeight: "bold",
           color: "#FF0000",
-          marginRight: "1rem",
+          marginRight: "1rem"
         }}
       >
         {DownVotes}

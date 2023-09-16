@@ -8,11 +8,11 @@ const updateAccess = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const updaterestriction = await prisma.user.update({
     where: {
-      email: userEmail,
+      email: userEmail
     },
     data: {
-      isRestricted,
-    },
+      isRestricted
+    }
   });
   res.status(200).json(updaterestriction);
 };

@@ -9,7 +9,7 @@ import {
   ListItemText
 } from "@mui/material";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Row } from "react-bootstrap";
 import AddAnswerForm from "../../Components/AddAnswerForm";
 import PopUp from "../../Components/PopUp";
@@ -34,6 +34,31 @@ const Question = (
   const { data } = useSession();
   const { questionId } = router.query;
   const [openQuestionPopUp, setOpenQuestionPopUp] = useState(false);
+  const [question, setQuestion] = useState(null);
+  const [questionAnswers, setQuestionAnswers] = useState([]);
+
+  useEffect(() => {
+    const getQuestion = async () => {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_HOST}/api/question/${questionId}`
+      );
+      const question = await res.json();
+      setQuestion(question);
+    };
+    getQuestion();
+  }, []);
+
+  useEffect(() => {
+    const getQuestionAnswers = async () => {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_HOST}/api/answer/question/${questionId}`
+      );
+      const answers = await res.json();
+      setQuestionAnswers(answers);
+      console.log(answers);
+    };
+    getQuestionAnswers();
+  }, []);
 
   const handleDeleteQuestion = async () => {
     const deleteQuestion = await fetch(
@@ -49,7 +74,6 @@ const Question = (
       }
     );
     const deleteQuestionJSON = await deleteQuestion.json();
-    console.log(deleteQuestionJSON);
     router.push("/QuestionsPage");
   };
 
@@ -63,16 +87,18 @@ const Question = (
         <Row style={{ justifyContent: "center", alignItems: "center" }}>
           <p
             style={{
-              fontSize: "45px",
+              fontSize: "28px", // Adjust font size
               fontWeight: "normal",
               marginLeft: "20px",
               marginTop: "10px",
               color: "black"
             }}
           >
-            {props?.questionData?.content}
+            {/* @ts-ignore */}
+            {question?.content}
           </p>
         </Row>
+
         <div
           style={{
             display: "flex",
@@ -81,27 +107,57 @@ const Question = (
           }}
         >
           <Button
-            disabled={props?.questionData?.userEmail !== data?.user?.email}
+            disabled={
+              // @ts-ignore
+              question?.userEmail !== data?.user?.email
+            }
             onClick={() => setOpenQuestionPopUp(true)}
-            style={{ marginRight: "10px" }}
+            style={{
+              marginRight: "10px",
+              backgroundColor: "transparent", // Make the background transparent
+              border: "none" // Remove the button border
+            }}
           >
-            <EditIcon style={{ color: "green" }} />
+            <EditIcon style={{ color: "green", fontSize: "20px" }} />{" "}
+            {/* Adjust icon size */}
           </Button>
           <Button
-            disabled={props?.questionData?.userEmail !== data?.user?.email}
+            disabled={
+              // @ts-ignore
+              question?.userEmail !== data?.user?.email
+            }
             onClick={handleDeleteQuestion}
+            style={{
+              backgroundColor: "transparent", // Make the background transparent
+              border: "none" // Remove the button border
+            }}
           >
-            <DeleteForeverIcon style={{ color: "red" }} />
+            <DeleteForeverIcon style={{ color: "red", fontSize: "20px" }} />{" "}
+            {/* Adjust icon size */}
           </Button>
         </div>
 
         <Row style={{ justifyContent: "center", alignItems: "center" }}>
-          <p style={{ fontSize: "15px", fontWeight: 100 }}>
-            Asked at {props?.questionData?.createdAt}
+          <p style={{ fontSize: "15px", fontWeight: "lighter" }}>
+            {" "}
+            {/* Adjust font weight */}
+            Asked at {/* @ts-ignore */}
+            {question?.createdAt}
           </p>
         </Row>
+
         <Button
-          style={{ width: "fit-content", marginTop: "10px" }}
+          style={{
+            width: "fit-content",
+            marginTop: "10px",
+            fontSize: "16px", // Adjust font size
+            fontWeight: "bold", // Make the font bold
+            backgroundColor: "#3f51b5",
+            color: "#ffffff",
+            padding: "10px 20px",
+            textTransform: "uppercase",
+            borderRadius: "10px"
+          }}
           variant="contained"
           color="primary"
           onClick={() => setOpenPopUp(true)}
@@ -114,129 +170,146 @@ const Question = (
         </Button>
 
         <List style={{ width: "100%" }}>
-          {props?.answerData?.map((answer: any) => (
-            <ListItem
-              style={{
-                display: "flex",
-                width: "100%",
-                justifyContent: "space-between",
-                boxShadow: " 0px 0px 2px #000000",
-                borderRadius: "10px",
-                marginTop: 20,
-                backgroundColor: answer.isSolution ? "#FFEE00" : "white"
-              }}
-              key={answer.id}
-            >
-              <ListItemAvatar
-                style={{
-                  marginRight: "20px"
-                }}
-              >
-                <InitialsAvatar name={answer.userEmail} />
-              </ListItemAvatar>
-              <ListItemText
-                primary={answer.content}
-                secondary={answer.createdAt}
-              ></ListItemText>
-              <UpVoteDownVote
-                answerId={answer.id}
-                UpVotes={answer.UpVotes}
-                DownVotes={answer.DownVotes}
-                questionId={questionId}
-                userEmail={data?.user?.email}
-              />
-              <div
+          {questionAnswers.length > 0 &&
+            questionAnswers.map((answer: any) => (
+              <ListItem
                 style={{
                   display: "flex",
+                  width: "100%",
                   justifyContent: "space-between",
-                  alignItems: "center",
-                  marginLeft: "80px"
+                  boxShadow: "0px 0px 2px #000000",
+                  borderRadius: "10px",
+                  marginTop: 20,
+                  backgroundColor: answer.isSolution ? "#FFEE00" : "white",
+                  padding: "10px" // Add padding for better spacing
                 }}
+                key={answer.id}
               >
-                <Button
-                  disabled={
-                    props?.questionData?.userEmail !== data?.user?.email
-                      ? true
-                      : false
-                  }
-                  onClick={async () => {
-                    await fetch(
-                      `${process.env.NEXT_PUBLIC_HOST}/api/answer/${answer.id}/solution`,
-                      {
-                        method: "PUT",
-                        headers: {
-                          "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify({
-                          answerId: answer.id,
-                          isSolution: true
-                        })
-                      }
-                    );
-                    window.location.reload();
-                  }}
-                  variant="contained"
+                <ListItemAvatar
                   style={{
-                    marginLeft: "20px"
+                    marginRight: "20px",
+                    flex: "none" // Prevent avatar from growing
                   }}
                 >
-                  <Typography
+                  <InitialsAvatar name={answer.userEmail} />
+                </ListItemAvatar>
+                <ListItemText
+                  primary={answer.content}
+                  secondary={answer.createdAt}
+                  style={{
+                    flex: "1" // Allow text to grow and fill available space
+                  }}
+                ></ListItemText>
+                <UpVoteDownVote
+                  answerId={answer.id}
+                  UpVotes={answer.UpVotes}
+                  DownVotes={answer.DownVotes}
+                  questionId={questionId}
+                  userEmail={data?.user?.email}
+                />
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    marginLeft: "20px",
+                    flex: "none" // Prevent button group from growing
+                  }}
+                >
+                  <Button
+                    disabled={
+                      props?.questionData?.userEmail !== data?.user?.email
+                    }
+                    onClick={async () => {
+                      await fetch(
+                        `${process.env.NEXT_PUBLIC_HOST}/api/answer/${answer.id}/solution`,
+                        {
+                          method: "PUT",
+                          headers: {
+                            "Content-Type": "application/json"
+                          },
+                          body: JSON.stringify({
+                            answerId: answer.id,
+                            isSolution: true
+                          })
+                        }
+                      );
+                      window.location.reload();
+                    }}
+                    variant="contained"
                     style={{
-                      fontSize: "15px",
-                      fontWeight: "regular"
+                      marginLeft: "10px", // Adjust spacing between buttons
+                      backgroundColor: "#4CAF50", // Green color for "Select as Solution" button
+                      color: "#fff", // White text color
+                      padding: "5px 10px" // Adjust padding
                     }}
                   >
-                    Select as Solution
-                  </Typography>
-                </Button>
-                <Button
-                  disabled={
-                    props?.questionData?.userEmail !== data?.user?.email
-                      ? true
-                      : false
-                  }
-                  onClick={async () => {
-                    await fetch(
-                      `${process.env.NEXT_PUBLIC_HOST}/api/answer/${answer.id}/solution`,
-                      {
-                        method: "PUT",
-                        headers: {
-                          "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify({
-                          answerId: answer.id,
-                          isSolution: false
-                        })
-                      }
-                    );
-                    window.location.reload();
-                  }}
-                  variant="contained"
-                  style={{
-                    marginLeft: "20px"
-                  }}
-                >
-                  <Typography
+                    <Typography
+                      style={{
+                        fontSize: "15px",
+                        fontWeight: "bold" // Make the text bold
+                      }}
+                    >
+                      Select as Solution
+                    </Typography>
+                  </Button>
+                  <Button
+                    disabled={
+                      props?.questionData?.userEmail !== data?.user?.email
+                    }
+                    onClick={async () => {
+                      await fetch(
+                        `${process.env.NEXT_PUBLIC_HOST}/api/answer/${answer.id}/solution`,
+                        {
+                          method: "PUT",
+                          headers: {
+                            "Content-Type": "application/json"
+                          },
+                          body: JSON.stringify({
+                            answerId: answer.id,
+                            isSolution: false
+                          })
+                        }
+                      );
+                      window.location.reload();
+                    }}
+                    variant="contained"
                     style={{
-                      fontSize: "15px",
-                      fontWeight: "regular"
+                      marginLeft: "10px", // Adjust spacing between buttons
+                      backgroundColor: "#F44336", // Red color for "Not a Solution" button
+                      color: "#fff", // White text color
+                      padding: "5px 10px" // Adjust padding
                     }}
                   >
-                    Not a Solution
-                  </Typography>
-                </Button>
-                <Button
-                  style={{
-                    marginLeft: "20px"
-                  }}
-                  variant="contained"
-                  onClick={() => router.push(`/AnswerPage/${answer.id}`)}
-                >
-                  View Details
-                </Button>
-              </div>
-            </ListItem>
-          ))}
+                    <Typography
+                      style={{
+                        fontSize: "15px",
+                        fontWeight: "bold" // Make the text bold
+                      }}
+                    >
+                      Not a Solution
+                    </Typography>
+                  </Button>
+                  <Button
+                    style={{
+                      marginLeft: "10px", // Adjust spacing between buttons
+                      padding: "5px 10px" // Adjust padding
+                    }}
+                    variant="contained"
+                    onClick={() => router.push(`/AnswerPage/${answer.id}`)}
+                  >
+                    <Typography
+                      style={{
+                        fontSize: "15px",
+                        fontWeight: "bold" // Make the text bold
+                      }}
+                    >
+                      View Details
+                    </Typography>
+                  </Button>
+                </div>
+              </ListItem>
+            ))}
         </List>
       </Grid>
       <PopUp

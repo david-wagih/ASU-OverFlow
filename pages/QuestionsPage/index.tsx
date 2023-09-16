@@ -5,6 +5,7 @@ import {
   Grid,
   Icon,
   Input,
+  InputAdornment,
   List,
   ListItem,
   ListItemAvatar,
@@ -12,7 +13,7 @@ import {
   TextField,
   Typography
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Row } from "react-bootstrap";
 import Select from "react-select";
 import { CategoryOptions } from "../../utils/categoryOptions";
@@ -23,6 +24,7 @@ import AddQuestionForm from "../../Components/AddQuestionForm";
 import { getSession, useSession } from "next-auth/react";
 import { InferGetServerSidePropsType } from "next";
 import { createAnswerPriviledgeRequest } from "../../services/userServices";
+import SearchIcon from "@mui/icons-material/Search";
 
 const QuestionsPage = (
   props: InferGetServerSidePropsType<typeof getServerSideProps>
@@ -32,6 +34,8 @@ const QuestionsPage = (
   const router = useRouter();
   const { data } = useSession();
   const [hover, setHover] = useState(false);
+  const [questions, setQuestions] = useState([]);
+  console.log(props);
 
   const handleSearchField = (e: any) => {
     setValue(e.target.value);
@@ -51,6 +55,16 @@ const QuestionsPage = (
 
   // this is for the Modal state
   const [openPopUp, setOpenPopUp] = useState(false);
+
+  useEffect(() => {
+    const getAllQuestions = async () => {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/question/`);
+      const data = await res.json();
+      console.log(data);
+      setQuestions(data);
+    };
+    getAllQuestions();
+  }, []);
 
   return (
     <>
@@ -110,13 +124,23 @@ const QuestionsPage = (
             <TextField
               style={{
                 marginTop: "5px",
-                marginBottom: "5px"
+                marginBottom: "5px",
+                width: "100%" // Set the width to occupy the available space
               }}
               placeholder="Search"
               onChange={handleSearchField}
               value={value}
-              helperText="make the Search Keyword not more than 54 characters"
-            ></TextField>
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon />{" "}
+                  </InputAdornment>
+                )
+              }}
+              helperText="Make the Search Keyword not more than 54 characters"
+              variant="outlined" // Add an outline to the TextField
+              size="small" // Adjust the size as needed
+            />
           </div>
           <Button
             style={{
@@ -127,7 +151,8 @@ const QuestionsPage = (
               padding: "10px 20px",
               fontWeight: "bold",
               textTransform: "uppercase",
-              transition: "all 0.3s"
+              transition: "all 0.3s",
+              marginLeft: "20px" // Add some left margin to separate it from other elements
             }}
             variant="contained"
             onClick={() => setOpenPopUp(true)}
@@ -135,6 +160,7 @@ const QuestionsPage = (
           >
             Ask Question
           </Button>
+
           <Button
             style={{
               width: 300,
@@ -154,64 +180,70 @@ const QuestionsPage = (
           </Button>
         </Row>
         <List style={{ width: "100%" }}>
-          {props.questions
-            .filter((val: { category: any; content: string }) => {
-              if (value === "" && categoryfield === "") {
-                return val;
-              } else if (
-                val.category ===
-                // @ts-ignore
-                categoryfield.label
-              ) {
-                if (val.content.toLowerCase().includes(value.toLowerCase()))
-                  return val;
-              }
-            })
-            .map((question: any) => (
-              <ListItem
-                button
-                style={{
-                  borderRadius: "10px",
-                  boxShadow: hover
-                    ? "0px 0px 5px #555555"
-                    : "0px 0px 2px #000000",
-                  backgroundColor: hover ? "#EFEFEF" : "#F5F5F5",
-                  marginTop: "20px",
-                  padding: "20px",
-                  transition: "all 0.3s"
-                }}
-                onClick={() => {
-                  router.push("/QuestionsPage/" + question.id);
-                }}
-                onMouseEnter={() => setHover(true)}
-                onMouseLeave={() => setHover(false)}
-                key={question.id}
-              >
-                <ListItemAvatar>
-                  <Avatar
-                    variant="square"
-                    sx={{ width: 50, height: 50, marginRight: 5 }}
-                    src={
-                      question.category === "WebDevelopment"
-                        ? CategoriesIcons[0]
-                        : question.category === "MobileDevelopment"
-                        ? CategoriesIcons[1]
-                        : question.category === "DataScience"
-                        ? CategoriesIcons[2]
-                        : CategoriesIcons[3]
+          {questions.length > 0 &&
+            questions
+              .filter((question: any) => {
+                if (value === "" && categoryfield === "") {
+                  return true; // Show all questions if no search or category filter applied
+                } else if (
+                  (categoryfield === "" ||
+                    // @ts-ignore
+                    question.category === categoryfield.label) &&
+                  question.content.toLowerCase().includes(value.toLowerCase())
+                ) {
+                  return true; // Show questions that match search and category filters
+                }
+                return false; // Hide questions that don't match filters
+              })
+              .map((question: any) => (
+                <ListItem
+                  style={{
+                    borderRadius: "10px",
+                    boxShadow: hover
+                      ? "0px 0px 5px #555555"
+                      : "0px 0px 2px #000000",
+                    backgroundColor: hover ? "#EFEFEF" : "#F5F5F5",
+                    marginTop: "20px",
+                    padding: "20px",
+                    transition: "all 0.3s",
+                    cursor: "pointer"
+                  }}
+                  onClick={() => {
+                    router.push("/QuestionsPage/" + question.id);
+                  }}
+                  onMouseEnter={() => setHover(true)}
+                  onMouseLeave={() => setHover(false)}
+                  key={question.id}
+                >
+                  <ListItemAvatar>
+                    <Avatar
+                      variant="square"
+                      sx={{ width: 50, height: 50, marginRight: 5 }}
+                      src={
+                        question.category === "Web"
+                          ? CategoriesIcons[0]
+                          : question.category === "Mobile"
+                          ? CategoriesIcons[1]
+                          : question.category === "AI"
+                          ? CategoriesIcons[2]
+                          : CategoriesIcons[3]
+                      }
+                    />
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={question.content}
+                    secondary={
+                      question.userEmail == props?.userData?.email
+                        ? "You"
+                        : question.userEmail
                     }
+                    style={{ marginLeft: "20px" }}
                   />
-                </ListItemAvatar>
-                <ListItemText
-                  primary={question.content}
-                  secondary={question.userEmail}
-                  style={{ marginLeft: "20px" }}
-                />
-                <Typography variant="caption" style={{ marginLeft: "auto" }}>
-                  {question.createdAt}
-                </Typography>
-              </ListItem>
-            ))}
+                  <Typography variant="caption" style={{ marginLeft: "auto" }}>
+                    {question.createdAt}
+                  </Typography>
+                </ListItem>
+              ))}
         </List>
       </Grid>
       <PopUp title="Ask Form" openPopUp={openPopUp} setOpenPopUp={setOpenPopUp}>

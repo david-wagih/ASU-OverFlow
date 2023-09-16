@@ -81,10 +81,10 @@ model Question {
 }
 
 enum Category {
-  WebDevelopment
-  MobileDevelopment
-  DataScience
-  ArtificialIntelligence
+  Web
+  Mobile
+  AI
+  ML
 }
 
 model Answer {

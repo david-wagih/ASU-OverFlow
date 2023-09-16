@@ -2,12 +2,12 @@ import axios from "../utils/axios";
 
 const getAllUsersRequests = async () => {
   const requests = await fetch(
-    `${process.env.NEXT_PUBLIC_HOST}/api/user/requests`,
+    `${process.env.NEXT_PUBLIC_HOST}/api/User/requests`,
     {
       method: "GET",
       headers: {
-        "Content-Type": "application/json",
-      },
+        "Content-Type": "application/json"
+      }
     }
   );
   const allRequestsJson = requests ? await requests.json() : null;
@@ -16,12 +16,12 @@ const getAllUsersRequests = async () => {
 
 const getAllUsers = async () => {
   const users = await fetch(
-    `${process.env.NEXT_PUBLIC_HOST}/api/user/allUsers`,
+    `${process.env.NEXT_PUBLIC_HOST}/api/User/allUsers`,
     {
       method: "GET",
       headers: {
-        "Content-Type": "application/json",
-      },
+        "Content-Type": "application/json"
+      }
     }
   );
   const allUsersJson = users ? await users.json() : null;
@@ -40,8 +40,8 @@ const updateUserRequest = async (
         method: "PUT",
         data: {
           id: id,
-          status: status,
-        },
+          status: status
+        }
       });
       await updateUserPrivilege(email!);
     } else if (status === "rejected") {
@@ -50,8 +50,8 @@ const updateUserRequest = async (
         method: "PUT",
         data: {
           id: id,
-          status: status,
-        },
+          status: status
+        }
       });
       return rejectrequest;
     }
@@ -65,8 +65,8 @@ const updateUserPrivilege = async (email: string) => {
     url: `user/${email}`,
     method: "PUT",
     data: {
-      hasPrivilege: true,
-    },
+      hasPrivilege: true
+    }
   });
   return updatedUser;
 };
@@ -77,8 +77,8 @@ const updateUserAccess = async (email: string, isRestricted: Boolean) => {
     method: "PUT",
     data: {
       userEmail: email,
-      isRestricted: isRestricted,
-    },
+      isRestricted: isRestricted
+    }
   });
   return updatedUser;
 };
@@ -86,5 +86,5 @@ export {
   getAllUsersRequests,
   getAllUsers,
   updateUserRequest,
-  updateUserAccess,
+  updateUserAccess
 };
